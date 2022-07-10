@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Roman\\source\\repos\\TextAdventureGame\\TextAdventureGame.csproj": {}
+    "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\TextAdventureGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Roman\\source\\repos\\TextAdventureGame\\TextAdventureGame.csproj": {
+    "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\TextAdventureGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Roman\\source\\repos\\TextAdventureGame\\TextAdventureGame.csproj",
+        "projectUniqueName": "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\TextAdventureGame.csproj",
         "projectName": "TextAdventureGame",
-        "projectPath": "C:\\Users\\Roman\\source\\repos\\TextAdventureGame\\TextAdventureGame.csproj",
+        "projectPath": "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\TextAdventureGame.csproj",
         "packagesPath": "C:\\Users\\Roman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Roman\\source\\repos\\TextAdventureGame\\obj\\",
+        "outputPath": "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Roman\\AppData\\Roaming\\NuGet\\NuGet.Config",
