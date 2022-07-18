@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextAdventureGame.Runnable;
 
-namespace TextAdventureGame.Runnable
+namespace TextAdventureGame
 {
     public class GameText
     {
         // DATA //
         // Text data (for displaying)
-        public string asOptionText;
         public string alwaysText;
+        public string asOptionText;
         public string asTitleText;
 
         // Conditionals (for filling empty spots in the text)
@@ -21,10 +22,10 @@ namespace TextAdventureGame.Runnable
 
 
         // CONSTRUCTORS //
-        public GameText(string asOption, string always, string asTitle)
+        public GameText(string always, string asOption, string asTitle)
         {
-            asOptionText = asOption;
             alwaysText = always;
+            asOptionText = asOption;
             asTitleText = asTitle;
 
             optionConditionals = new ConditionalText[0];
@@ -55,8 +56,8 @@ namespace TextAdventureGame.Runnable
 
             // Generates the output text
             string resolvedText = "";
-            if (asOption) resolvedText += string.Format(asOptionText, optionConditionalsResolved);
             resolvedText += string.Format(alwaysText, alwaysConditionalsResolved);
+            if (asOption) resolvedText += string.Format(asOptionText, optionConditionalsResolved);
             if (!asOption) resolvedText += string.Format(asTitleText, titleConditionalsResolved);
 
             // Returns the resolved text

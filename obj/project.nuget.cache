@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "h29NQF/jgl0p9Y9d3jvIBF9C8YHzdzQLzCFR/fMewfFUL/mwLJt8kgn/C/n0XOpRaElXDk4ltPkt1+EHw9d+6w==",
+  "dgSpecHash": "3HC5aBXuBzAJKvAnhLvZfWegzIuoYZGmw2RpWnh5VdOh5621yfJwj6TCgL76uLaRoJ3aQRwekrABSY2rYdjP5g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Roman\\source\\repos\\TextAdventureScripting\\TextAdventureGame.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Roman\\.nuget\\packages\\antlr4.runtime.standard\\4.10.1\\antlr4.runtime.standard.4.10.1.nupkg.sha512"
+  ],
   "logs": []
 }

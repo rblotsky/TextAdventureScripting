@@ -30,3 +30,5 @@ C:\Users\Roman\source\repos\TextAdventureScripting\obj\Debug\net5.0\TextAdventur
 C:\Users\Roman\source\repos\TextAdventureScripting\obj\Debug\net5.0\TextAdventureGame.genruntimeconfig.cache
 C:\Users\Roman\source\repos\TextAdventureScripting\obj\Debug\net5.0\TextAdventureGame.csproj.AssemblyReference.cache
 C:\Users\Roman\source\repos\TextAdventureScripting\obj\Debug\net5.0\refint\TextAdventureGame.dll
+C:\Users\Roman\source\repos\TextAdventureScripting\bin\Debug\net5.0\Antlr4.Runtime.Standard.dll
+C:\Users\Roman\source\repos\TextAdventureScripting\obj\Debug\net5.0\TextAdventureGame.csproj.CopyComplete

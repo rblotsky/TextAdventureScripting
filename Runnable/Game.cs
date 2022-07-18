@@ -48,7 +48,7 @@ namespace TextAdventureGame.Runnable
             // If the new block is the same as the active block, does nothing
             if(activeBlock == newBlock)
             {
-                Program.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!") false);
+                Program.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!"), false);
                 return;
             }
 
