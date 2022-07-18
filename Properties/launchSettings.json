@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TextAdventureGame": {
+      "commandName": "Project",
+      "commandLineArgs": "--debug"
+    }
+  }
+}

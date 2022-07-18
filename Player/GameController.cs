@@ -3,18 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextAdventureGame.Runnable;
 
 namespace TextAdventureGame.Player
 {
     public class GameController
     {
-        //TODO: The GameController should be a superclass with functions to display output and provide input into the game.
-        //      Making it a superclass allows integration with other UI or interface systems.
-        //      All the real logic is handled within the Runnable classes, meaning this just needs to loop and display
-        //      whatever is within the current Block.
-        //      In the future, if I add new features like Maps, Inventory, etc. all that I need to do is add new virtual
-        //      functions to this class that can be overridden.
+        // FUNCTIONS //
+        public void PlayGame(Game runnableGame)
+        {
+            // Starts the game
+            runnableGame.StartGame();
 
-        //NOTE: In the future, I need to ensure that this class does exactly ZERO modification of anything within the blocks.
+            // While the game is active, displays its output and handles input
+            while(runnableGame.IsGameActive)
+            {
+                // Clears what was written before
+                Console.Clear();
+
+                // Gets the text to display
+                string promptText = runnableGame.GetCurrentBlockText();
+                string[] options = runnableGame.GetCurrentOptions();
+
+                // Displays it
+                ColourConsole.WriteLine(promptText, ConsoleColor.White);
+                for(int i = 0; i < options.Length; i++)
+                {
+                    ColourConsole.Write(i + " >", ConsoleColor.Cyan);
+                    ColourConsole.Write(options[i], ConsoleColor.White);
+                    ColourConsole.Write("\n");
+                }
+
+                // Tells the player to enter input
+                ColourConsole.WriteLine("Select an option by entering its number: ", ConsoleColor.Magenta);
+
+                // Reads input and handles it if it's an integer
+                string userInput = Console.ReadLine();
+                if(int.TryParse(userInput, out int result))
+                {
+                    runnableGame.HandleUserInput(result);
+                }
+                
+            }
+        }
+        
     }
 }

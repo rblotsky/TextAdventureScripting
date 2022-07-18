@@ -9,19 +9,10 @@ namespace TextAdventureGame.Runnable
     public class Block
     {
         // DATA //
-        // Identifier
-        public int contextID;
-
         // Base data
+        public int contextID;
         public GameText blockText;
-        public string returnText;
-
-        // Links
-        public Block reroute;
-        public Block[] options;
-        public Block returnPoint;
-        public Block continuePoint;
-
+        
 
         // FUNCTIONS //
         // Data Management
@@ -33,41 +24,23 @@ namespace TextAdventureGame.Runnable
         }
 
 
-        // Managing State
-        public Block HandleUserInput(Game context, int inputValue)
+        // Interfacing Functions
+        public virtual Block HandleInput(Game context, int inputValue)
         {
-            //TODO: Follow order of priorities: reroute -> options -> return -> continue
-            //NOTE: The user's input only really matters in the "options" stage, otherwise we just ignore it and take it as 
-            //      permission to continue the game.
-
-            // Return value: returns the new game block, or null if it doesn't change.
-            // Try throwing an exception if it has no links whatsoever?
+            // No initial value
             return null;
         }
 
-        public string GetBlockTextAfterSelection(Game context)
+        public virtual string GetBlockText(Game context, bool asOption)
         {
-            // Returns the resolved text of the block. We are currently NOT in options selection, it will display post-selection text.
-            return blockText.ResolveText(context, false);
+            // Returns the resolved text of the block with current context and whether it is an option
+            return blockText.ResolveText(context, asOption);
         }
 
-        public string GetBlockTextAsOption(Game context)
+        public virtual string[] GetBlockOptions(Game context)
         {
-            // Returns the text as if it were in option selection
-            return blockText.ResolveText(context, true);
-        }
-
-        public string[] GetBlockOptions(Game context)
-        {
-            // Gets a list of block text as options from the option links
-            string[] optionText = new string[options.Length];
-            for(int i = 0; i < options.Length; i++)
-            {
-                optionText[i] = options[i].GetBlockTextAsOption(context);
-            }
-
-            // Returns the list of text
-            return optionText;
+            // Returns an empty array by default
+            return new string[0];
         }
     }
 }

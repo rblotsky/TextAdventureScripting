@@ -1,21 +1,36 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using TextAdventureGame.Runnable;
 using TextAdventureGame.Compiler;
+using TextAdventureGame.Player;
+
 namespace TextAdventureGame
 {
 
     class Program
     {
         // DATA //
+        // Constants
         public static ConsoleColor ERROR_COLOUR = ConsoleColor.Red;
         public static ConsoleColor PROMPT_COLOUR = ConsoleColor.Blue;
         public static ConsoleColor INFO_COLOUR = ConsoleColor.White;
+        public static ConsoleColor DEBUG_COLOUR = ConsoleColor.Yellow;
+
+        // Cached Data
+        private static bool isDebug = false;
 
 
         // FUNCTIONS //
+        // Main
         static void Main(string[] args)
         {
+            // Sets debug value
+            if(args.Contains("--debug"))
+            {
+                isDebug = true;
+            }
+
             // Prints prompt
             ColourConsole.WriteLine("Enter a text file to compile into a game. " +
                 "\nThis program will output all compiler data as it runs.", INFO_COLOUR);
@@ -33,7 +48,7 @@ namespace TextAdventureGame
             // Tries playing (this won't actually do anything right now)
             if(compiledGame != null)
             {
-                compiledGame.PlayGame();
+                //GameController.PlayGame(compiledGame);
             }
             else
             {
@@ -41,6 +56,17 @@ namespace TextAdventureGame
             }
         }
 
+        // Debugging
+        public static void DebugLog(string text, bool isError)
+        {
+            if (isDebug)
+            {
+                ColourConsole.WriteLine(text, (isError ? ERROR_COLOUR : DEBUG_COLOUR));
+            }
+        }
+
+
+        // Compilation
         private static Game CompileGameFromFile(string absoluteFilePath, AdventureCompiler compiler)
         {
             // Caches a return value

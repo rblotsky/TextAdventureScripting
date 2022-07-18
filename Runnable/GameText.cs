@@ -12,12 +12,12 @@ namespace TextAdventureGame.Runnable
         // Text data (for displaying)
         public string alwaysText;
         public string preSelectionText;
-        public string selectedText;
+        public string postSelectionText;
 
         // Conditionals (for filling empty spots in the text)
         public ConditionalText[] alwaysConditionals;
         public ConditionalText[] preSelectionConditionals;
-        public ConditionalText[] selectedConditionals;
+        public ConditionalText[] postSelectionConditionals;
 
 
         // FUNCTIONS //
@@ -25,25 +25,25 @@ namespace TextAdventureGame.Runnable
         {
             // Resolves all conditionals
             string[] alwaysConditionalsResolved = new string[alwaysConditionals.Length];
-            string[] preSelectionConditionalsResolved = new string[preSelectionConditionals.Length];
-            string[] selectedConditionalsResolved = new string[selectedConditionals.Length];
+            string[] preConditionalsResolved = new string[preSelectionConditionals.Length];
+            string[] postConditionalsResolved = new string[postSelectionConditionals.Length];
             for(int i = 0; i < alwaysConditionals.Length; i++)
             {
                 alwaysConditionalsResolved[i] = alwaysConditionals[i].ResolveConditional(context);
             }
             for (int i = 0; i < preSelectionConditionals.Length; i++)
             {
-                preSelectionConditionalsResolved[i] = preSelectionConditionals[i].ResolveConditional(context);
+                preConditionalsResolved[i] = preSelectionConditionals[i].ResolveConditional(context);
             }
-            for (int i = 0; i < selectedConditionals.Length; i++)
+            for (int i = 0; i < postSelectionConditionals.Length; i++)
             {
-                selectedConditionalsResolved[i] = selectedConditionals[i].ResolveConditional(context);
+                postConditionalsResolved[i] = postSelectionConditionals[i].ResolveConditional(context);
             }
 
             // Generates the output text
             string resolvedText = string.Format(alwaysText, alwaysConditionalsResolved);
-            if (inSelection) resolvedText += string.Format(preSelectionText, preSelectionConditionalsResolved);
-            else resolvedText += string.Format(selectedText, selectedConditionalsResolved);
+            if (inSelection) resolvedText += string.Format(preSelectionText, preConditionalsResolved);
+            else resolvedText += string.Format(postSelectionText, postConditionalsResolved);
 
             // Returns the resolved text
             return resolvedText;
