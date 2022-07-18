@@ -15,10 +15,11 @@ namespace TextAdventureGame.Runnable
         // Cached Data
         private Block activeBlock;
         private int currentOptionsCount;
-        private List<StoryBlock> accessedBlocks;
+        private List<Block> accessedBlocks;
 
         // Properties
         public bool IsGameActive { get { return activeBlock != null; } }
+        public bool RequireInput { get { return activeBlock.GetInputType(this) != UserInputType.None; } }
 
 
         // FUNCTIONS //
@@ -28,13 +29,19 @@ namespace TextAdventureGame.Runnable
             // Starts the game by setting the activeBlock to the initialBlock and resetting certain values
             activeBlock = initialBlock;
             currentOptionsCount = 0;
-            accessedBlocks = new List<StoryBlock>();
+            accessedBlocks = new List<Block>();
         }
 
         public void FinishGame()
         {
             // Sets the active block to null
             activeBlock = null;
+        }
+
+        public void ContinueToNextBlock()
+        {
+            // Runs the default link for the current block
+            activeBlock = activeBlock.RunDefaultLink(this);
         }
 
         public string GetCurrentBlockText()
@@ -46,7 +53,7 @@ namespace TextAdventureGame.Runnable
         {
             // Gets the list of options from the active block and caches the amount.
             string[] options = activeBlock.GetBlockOptions(this);
-            currentOptionsCount = options.Length;
+            currentOptionsCount = (options != null ? options.Length : 0);
 
             // Returns the list of options.
             return options;
@@ -57,31 +64,10 @@ namespace TextAdventureGame.Runnable
             return null;
         }
 
-        public bool HandleUserInput(int inputValue)
+        public void HandleUserInput(string userInput)
         {
-            // Attempts selecting an option. Returns true if succeeded, false if could not select any option.
-            // If within valid range, sends input to the active block.
-            if(inputValue > 0 && inputValue < currentOptionsCount)
-            {
-                // Gets the new block and sets the current block to that. If it's null, finishes the game.
-                Block newBlock = activeBlock.HandleInput(this, inputValue);
-                if(newBlock == null)
-                {
-                    Program.DebugLog(string.Format("Block ID {0} w/ text {1} returned NULL for input value {2}!", activeBlock.GetContextID(), activeBlock.GetBlockText(this,true), inputValue), false);
-                    FinishGame();
-                }
-
-                else
-                {
-                    activeBlock = newBlock;
-                }
-
-                // Returns true after it successfully handles input
-                return true;
-            }
-
-            // Returns false if input was invalid
-            return false;
+            // Tries selecting an option and updates the active block based on the output.
+            activeBlock = activeBlock.HandleInput(this, userInput);
         }
         
     }

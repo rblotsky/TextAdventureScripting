@@ -10,40 +10,54 @@ namespace TextAdventureGame.Runnable
     {
         // DATA //
         // Text data (for displaying)
+        public string asOptionText;
         public string alwaysText;
-        public string preSelectionText;
-        public string postSelectionText;
+        public string asTitleText;
 
         // Conditionals (for filling empty spots in the text)
         public ConditionalText[] alwaysConditionals;
-        public ConditionalText[] preSelectionConditionals;
-        public ConditionalText[] postSelectionConditionals;
+        public ConditionalText[] optionConditionals;
+        public ConditionalText[] titleConditionals;
+
+
+        // CONSTRUCTORS //
+        public GameText(string asOption, string always, string asTitle)
+        {
+            asOptionText = asOption;
+            alwaysText = always;
+            asTitleText = asTitle;
+
+            optionConditionals = new ConditionalText[0];
+            alwaysConditionals = new ConditionalText[0]; 
+            titleConditionals = new ConditionalText[0];
+        }
 
 
         // FUNCTIONS //
-        public string ResolveText(Game context, bool inSelection)
+        public string ResolveText(Game context, bool asOption)
         {
             // Resolves all conditionals
             string[] alwaysConditionalsResolved = new string[alwaysConditionals.Length];
-            string[] preConditionalsResolved = new string[preSelectionConditionals.Length];
-            string[] postConditionalsResolved = new string[postSelectionConditionals.Length];
+            string[] optionConditionalsResolved = new string[optionConditionals.Length];
+            string[] titleConditionalsResolved = new string[titleConditionals.Length];
             for(int i = 0; i < alwaysConditionals.Length; i++)
             {
                 alwaysConditionalsResolved[i] = alwaysConditionals[i].ResolveConditional(context);
             }
-            for (int i = 0; i < preSelectionConditionals.Length; i++)
+            for (int i = 0; i < optionConditionals.Length; i++)
             {
-                preConditionalsResolved[i] = preSelectionConditionals[i].ResolveConditional(context);
+                optionConditionalsResolved[i] = optionConditionals[i].ResolveConditional(context);
             }
-            for (int i = 0; i < postSelectionConditionals.Length; i++)
+            for (int i = 0; i < titleConditionals.Length; i++)
             {
-                postConditionalsResolved[i] = postSelectionConditionals[i].ResolveConditional(context);
+                titleConditionalsResolved[i] = titleConditionals[i].ResolveConditional(context);
             }
 
             // Generates the output text
-            string resolvedText = string.Format(alwaysText, alwaysConditionalsResolved);
-            if (inSelection) resolvedText += string.Format(preSelectionText, preConditionalsResolved);
-            else resolvedText += string.Format(postSelectionText, postConditionalsResolved);
+            string resolvedText = "";
+            if (asOption) resolvedText += string.Format(asOptionText, optionConditionalsResolved);
+            resolvedText += string.Format(alwaysText, alwaysConditionalsResolved);
+            if (!asOption) resolvedText += string.Format(asTitleText, titleConditionalsResolved);
 
             // Returns the resolved text
             return resolvedText;

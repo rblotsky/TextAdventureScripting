@@ -12,7 +12,18 @@ namespace TextAdventureGame.Runnable
         // Base data
         public int contextID;
         public GameText blockText;
-        
+
+        // Links Links
+        public Block defaultLink;
+        public Block[] options;
+
+
+        // CONSTRUCTORS //
+        public Block(GameText text)
+        {
+            blockText = text;
+        }
+
 
         // FUNCTIONS //
         // Data Management
@@ -25,10 +36,20 @@ namespace TextAdventureGame.Runnable
 
 
         // Interfacing Functions
-        public virtual Block HandleInput(Game context, int inputValue)
+        public virtual Block HandleInput(Game context, string input)
         {
-            // No initial value
-            return null;
+            // Tries parsing input
+            if(int.TryParse(input, out int value))
+            {
+                // If it's a valid option, returns the block for that option.
+                if(value >= 0 && value < options.Length)
+                {
+                    return options[value];
+                }
+            }
+
+            // Returns the same block by default
+            return this;
         }
 
         public virtual string GetBlockText(Game context, bool asOption)
@@ -39,8 +60,42 @@ namespace TextAdventureGame.Runnable
 
         public virtual string[] GetBlockOptions(Game context)
         {
-            // Returns an empty array by default
-            return new string[0];
+            // Returns a list of options if there are any
+            if(options != null)
+            {
+                string[] optionsList = new string[options.Length];
+                for (int i = 0; i < options.Length; i++)
+                {
+                    optionsList[i] = options[i].GetBlockText(context, true);
+                }
+
+                // Returns the list of text
+                return optionsList;
+            }
+
+            // If no options, returns null and logs a warning (this should not be called when there are no options)
+            return null;
+        }
+
+        public virtual UserInputType GetInputType(Game context)
+        {
+            // If there are options, input type is Option
+            if(options != null)
+            {
+                return UserInputType.Option;
+            }
+
+            // Otherwise, None
+            else
+            {
+                return UserInputType.None;
+            }
+
+        }
+
+        public Block RunDefaultLink(Game context)
+        {
+            return defaultLink;
         }
     }
 }
