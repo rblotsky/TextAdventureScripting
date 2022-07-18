@@ -42,10 +42,10 @@ namespace TextAdventureGame
                 Block optionB2 = new Block(new GameText("Choose ", "Option B2", " was good! Congratulations!"));
                 Block continueBlock = new Block(new GameText("", "You are in a new room after the first option. This is the victory room! You've won! Congrats!", ""));
 
-                startBlock.options = new Block[2] { optionA, optionB };
+                startBlock.optionBlocks = new Block[2] { optionA, optionB };
                 startBlock.defaultLink = continueBlock;
                 optionA.defaultLink = continueBlock;
-                optionB.options = new Block[2] { optionB1, optionB2 };
+                optionB.optionBlocks = new Block[2] { optionB1, optionB2 };
                 optionB1.defaultLink = optionB;
                 optionB2.defaultLink = continueBlock;
 
@@ -68,7 +68,7 @@ namespace TextAdventureGame
             string inputFilePath = Console.ReadLine();
 
             // Creates the compiler w/ default options
-            AdventureCompiler compilerToUse = new AdventureCompiler();
+            Compiler.Compiler compilerToUse = new Compiler.Compiler();
 
             // Tries compiling
             Game compiledGame = CompileGameFromFile(inputFilePath, compilerToUse);
@@ -95,7 +95,7 @@ namespace TextAdventureGame
 
 
         // Compilation
-        private static Game CompileGameFromFile(string absoluteFilePath, AdventureCompiler compiler)
+        private static Game CompileGameFromFile(string absoluteFilePath, Compiler.Compiler compiler)
         {
             // Caches a return value
             Game returnValue = null;

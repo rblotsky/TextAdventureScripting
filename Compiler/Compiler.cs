@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextAdventureGame.Compiler
 {
-    public class AdventureCompiler
+    public class Compiler
     {
         // CONSTRUCTORS //
         //TODO
@@ -15,8 +15,9 @@ namespace TextAdventureGame.Compiler
         // FUNCTIONS //
         public Runnable.Game CompileGame(string sourceText)
         {
-            //TODO
+            //TODO: How on earth do I make a compiler?????????
             return null;
+        
         }
     }
 }

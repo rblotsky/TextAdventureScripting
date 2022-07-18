@@ -14,12 +14,14 @@ namespace TextAdventureGame.Runnable
 
         // Cached Data
         private Block activeBlock;
-        private int currentOptionsCount;
         private List<Block> accessedBlocks;
+        private List<string> displayedText;
 
         // Properties
         public bool IsGameActive { get { return activeBlock != null; } }
-        public bool RequireInput { get { return activeBlock.GetInputType(this) != UserInputType.None; } }
+        public UserInputType InputType { get { return activeBlock.GetInputType(this); } }
+        public Option[] AvailableOptions { get { return activeBlock.GetBlockOptions(this); } }
+        public string CurrentTitleText { get { return activeBlock.GetBlockText(this, false); } }
 
 
         // FUNCTIONS //
@@ -28,47 +30,46 @@ namespace TextAdventureGame.Runnable
         {
             // Starts the game by setting the activeBlock to the initialBlock and resetting certain values
             activeBlock = initialBlock;
-            currentOptionsCount = 0;
             accessedBlocks = new List<Block>();
+            displayedText = new List<string>();
         }
 
-        public void FinishGame()
+        public void Continue()
         {
-            // Sets the active block to null
-            activeBlock = null;
+            // Will continue if there is no input required
+            if (InputType == UserInputType.None)
+            {
+                StartNewBlock(activeBlock.RunDefaultLink(this));
+            }
         }
 
-        public void ContinueToNextBlock()
+        public void StartNewBlock(Block newBlock)
         {
-            // Runs the default link for the current block
-            activeBlock = activeBlock.RunDefaultLink(this);
+            // If the new block is the same as the active block, does nothing
+            if(activeBlock == newBlock)
+            {
+                Program.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!") false);
+                return;
+            }
+
+            // Stores the last accessed block and its text
+            accessedBlocks.Add(activeBlock);
+            displayedText.Add(CurrentTitleText);
+
+            // Goes to the new block
+            activeBlock = newBlock;
         }
 
-        public string GetCurrentBlockText()
+        public void HandleTextInput(string userInput)
         {
-            return activeBlock.GetBlockText(this, false);
-        }
-
-        public string[] GetCurrentOptions()
-        {
-            // Gets the list of options from the active block and caches the amount.
-            string[] options = activeBlock.GetBlockOptions(this);
-            currentOptionsCount = (options != null ? options.Length : 0);
-
-            // Returns the list of options.
-            return options;
-        }
-
-        public string GetCurrentMetadata()
-        {
-            return null;
-        }
-
-        public void HandleUserInput(string userInput)
-        {
-            // Tries selecting an option and updates the active block based on the output.
-            activeBlock = activeBlock.HandleInput(this, userInput);
+            // Gets the new block and starts it
+            Block newBlock = activeBlock.HandleTextInput(this, userInput);
+            StartNewBlock(newBlock);
         }
         
+        public void HandleOptionSelection(Option selectedOption)
+        {
+            StartNewBlock(selectedOption.newBlock);
+        }
     }
 }
