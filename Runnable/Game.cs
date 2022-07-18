@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAdventureGame
+namespace TextAdventureGame.Runnable
 {
-    class CompiledAdventure
+    public class Game
     {
         // DATA //
 
+        // FUNCTIONS //
+        public void PlayGame()
+        {
+            //TODO
+        }
     }
 }
