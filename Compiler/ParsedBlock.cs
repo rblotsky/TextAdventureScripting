@@ -15,20 +15,25 @@ namespace TextAdventureGame.Compiler
         public DefaultLinkType defaultLinkType;
         public List<string> optionIDs;
         public string defaultLinkID;
+        public bool isOption;
+        public int indentLevel;
 
 
         // CONSTRUCTORS //
-        public ParsedBlock(string newID, GameText newText, DefaultLinkType linkType)
+        public ParsedBlock(string newID, GameText newText, DefaultLinkType linkType, int indent, bool option)
         {
             blockID = newID;
             text = newText;
             defaultLinkType = linkType;
             optionIDs = new List<string>();
             defaultLinkID = "0";
+            isOption = option;
+            indentLevel = indent;
         }
 
 
         // FUNCTIONS //
+        // Creating a Runnable version
         public Block ConvertToRunnable()
         {
             // Creates the runnable version (Note: does not fill in options and default links yet!)
@@ -66,6 +71,13 @@ namespace TextAdventureGame.Compiler
             {
                 Block defaultLinkBlock = allRunnables.Find(x => x.blockID == defaultLinkID);
             }
+
+        }
+
+
+        // Auto-Linking
+        public void GenerateAllLinks()
+        {
 
         }
     }
