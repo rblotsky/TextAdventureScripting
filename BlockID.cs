@@ -14,11 +14,22 @@ namespace TextAdventureGame
 
         // Properties
         public List<int> id { get { return _id; } }
+        public int idLength { get { return _id.Count; } }
+
+        // Constants
         public static readonly char STRING_SEP_CHAR = '-';
+        public static readonly int MIN_ID_LEN = 1;
+        public static readonly int MIN_INDEX_VAL = 0;
+        public static readonly BlockID ZERO = new BlockID(0);
 
 
         // CONSTRUCTORS //
         public BlockID(params int[] values)
+        {
+            _id = new List<int>(values);
+        }
+
+        public BlockID(List<int> values)
         {
             _id = new List<int>(values);
         }
@@ -45,7 +56,7 @@ namespace TextAdventureGame
 
 
         // Utility Functions
-        public bool IsEqual(object obj)
+        public bool Compare(object obj)
         {
             // Ensures objects are the same type have the same length ID
             if(obj is BlockID && ((BlockID)obj).id.Count == id.Count)
@@ -65,6 +76,49 @@ namespace TextAdventureGame
 
             // Returns false if the objects aren't the same type and don't ahve the same ID length
             return false;
+        }
+
+        public BlockID AddToLastIndex(int amount)
+        {
+            // Caches the stringified version of the ID for error message
+            string originalID = this.ToString();
+
+            // Iterates over the amount to add, modifying
+            int absoluteAmount = Math.Abs(amount);
+            int multiplier = amount / absoluteAmount;
+            for(int i = 0; i < absoluteAmount; i++)
+            {
+                this.id[this.idLength-1] += multiplier;
+
+                // If the last index is now too low, removes it and goes to a lower index
+                if(this.id[this.idLength-1] < MIN_INDEX_VAL)
+                {
+                    this.RemoveLastIndex();
+
+                    // If the ID length is now too low, throws an error
+                    if(this.idLength <= MIN_ID_LEN)
+                    {
+                        throw new Exception(string.Format("Could not add {0} to BlockID \"{1}\" because it would modify the first index!", amount, originalID));
+                    }
+                }
+            }
+
+            // Returns the newly modified ID
+            return this;
+        }
+
+        public BlockID AddIndex()
+        {
+            // Returns a this ID struct with a new index added to the end of the ID
+            id.Add(MIN_INDEX_VAL);
+            return this;
+        }
+
+        public BlockID RemoveLastIndex()
+        {
+            // Returns a this ID struct with the last index removed
+            id.Remove(idLength - 1);
+            return this;
         }
     }
 }
