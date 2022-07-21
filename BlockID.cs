@@ -56,28 +56,6 @@ namespace TextAdventureGame
 
 
         // Utility Functions
-        public bool Compare(object obj)
-        {
-            // Ensures objects are the same type have the same length ID
-            if(obj is BlockID && ((BlockID)obj).id.Count == id.Count)
-            {
-                // Ensures the values in the ID list are equal
-                for(int i = 0; i < id.Count; i++)
-                {
-                    if(id[i] != ((BlockID)obj).id[i])
-                    {
-                        return false;
-                    }
-                }
-
-                // If the values are confirmed to be equal (didn't return within the loop) considers the IDs to be equal
-                return true;
-            }
-
-            // Returns false if the objects aren't the same type and don't ahve the same ID length
-            return false;
-        }
-
         public BlockID AddToLastIndex(int amount)
         {
             // Caches the stringified version of the ID for error message
@@ -116,9 +94,55 @@ namespace TextAdventureGame
 
         public BlockID RemoveLastIndex()
         {
-            // Returns a this ID struct with the last index removed
-            id.Remove(idLength - 1);
+            // Removes last index unless its at the min ID length
+            if(idLength != MIN_ID_LEN)
+            {
+                id.Remove(idLength - 1);
+            }
+            
+            // Returns this ID, modified earlier.
             return this;
+        }
+
+
+        // Overrides
+        public override bool Equals(object obj)
+        {
+            // Ensures objects are the same type have the same length ID
+            if (obj is BlockID && ((BlockID)obj).id.Count == id.Count)
+            {
+                // Ensures the values in the ID list are equal
+                for (int i = 0; i < id.Count; i++)
+                {
+                    if (id[i] != ((BlockID)obj).id[i])
+                    {
+                        return false;
+                    }
+                }
+
+                // If the values are confirmed to be equal (didn't return within the loop) considers the IDs to be equal
+                return true;
+            }
+
+            // Returns false if the objects aren't the same type and don't ahve the same ID length
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+
+        // Operator Overrides
+        public static bool operator ==(BlockID left, BlockID right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(BlockID left, BlockID right)
+        {
+            return !(left == right);
         }
     }
 }

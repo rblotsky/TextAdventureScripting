@@ -19,5 +19,13 @@ namespace TextAdventureGame.Compiler
             return null;
         
         }
+
+
+        // Static
+        public static int GetStringHashInt(string stringToHash)
+        {
+            // Returns a hash of the string
+            return stringToHash.GetHashCode();
+        }
     }
 }
