@@ -31,4 +31,4 @@ An example adventure might be as follows:
 
     $ SECTION2
 
-    Section 2 has nothing of interest. The game is over.
+    Section 2 has nothing of interest. The game is over. @END
