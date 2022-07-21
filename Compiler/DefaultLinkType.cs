@@ -10,6 +10,5 @@ namespace TextAdventureGame.Compiler
     {
         Return,
         Continue,
-        Reroute
     }
 }

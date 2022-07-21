@@ -10,7 +10,7 @@ namespace TextAdventureGame.Runnable
     {
         // DATA //
         // Base data
-        public string blockID;
+        public BlockID blockID;
         public GameText blockText;
 
         // Links Links
@@ -19,7 +19,7 @@ namespace TextAdventureGame.Runnable
 
 
         // CONSTRUCTORS //
-        public Block(string id, GameText text)
+        public Block(BlockID id, GameText text)
         {
             blockID = id;
             blockText = text;
