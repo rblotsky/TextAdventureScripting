@@ -16,10 +16,11 @@ namespace TextAdventureGame.Compiler
         public BlockID[] optionIDs;
         public BlockID defaultLinkID;
         public bool isOptionBlock;
+        public string rerouteSection;
 
 
         // CONSTRUCTORS //
-        public ParsedBlock(BlockID newID, DefaultLinkType linkType, GameText newText, bool option)
+        public ParsedBlock(BlockID newID, DefaultLinkType linkType, GameText newText, bool option, string reroute)
         {
             blockID = newID;
             text = newText;
@@ -27,6 +28,7 @@ namespace TextAdventureGame.Compiler
             optionIDs = new BlockID[0];
             defaultLinkID = BlockID.ZERO;
             isOptionBlock = option;
+            rerouteSection = reroute;
         }
 
 
@@ -86,22 +88,30 @@ namespace TextAdventureGame.Compiler
         // Auto-Linking
         public void GenerateAllLinks(List<ParsedBlock> allBlocks)
         {
-            //TODO: Figure out what to do with the reroutes
-
-            // Tries getting options first
-            optionIDs = GetOptionLinks(allBlocks);
-
-            // If there are no options, uses the default link type to decide what to link to
-            if(optionIDs.Length == 0)
+            // If the reroute section isn't empty, tries setting it as default link
+            if(!string.IsNullOrEmpty(rerouteSection))
             {
-                if(defaultLinkType == DefaultLinkType.Continue)
-                {
-                    defaultLinkID = GetContinueLink(allBlocks);
-                }
+                defaultLinkID = GetRerouteLink(allBlocks);
+            }
 
-                else if(defaultLinkType == DefaultLinkType.Return)
+            // If the default link ID is still ZERO, tries getting options and other default links
+            if (defaultLinkID == BlockID.ZERO)
+            {
+                // Tries getting options first
+                optionIDs = GetOptionLinks(allBlocks);
+
+                // If there are no options, uses the default link type to decide what to link to
+                if (optionIDs.Length == 0)
                 {
-                    defaultLinkID = GetReturnLink(allBlocks);
+                    if (defaultLinkType == DefaultLinkType.Continue)
+                    {
+                        defaultLinkID = GetContinueLink(allBlocks);
+                    }
+
+                    else if (defaultLinkType == DefaultLinkType.Return)
+                    {
+                        defaultLinkID = GetReturnLink(allBlocks);
+                    }
                 }
             }
         }
@@ -127,10 +137,10 @@ namespace TextAdventureGame.Compiler
             return optionIDs.ToArray();
         }
 
-        public BlockID GetRerouteLink(List<ParsedBlock> allBlocks, string sectionName)
+        public BlockID GetRerouteLink(List<ParsedBlock> allBlocks)
         {
             // Generates the new ID
-            BlockID checkID = new BlockID(Compiler.GetStringHashInt(sectionName));
+            BlockID checkID = new BlockID(Compiler.GetStringHashInt(rerouteSection));
             checkID.AddIndex();
 
             // Checks if that ID exists
