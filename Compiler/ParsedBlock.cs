@@ -108,15 +108,39 @@ namespace TextAdventureGame.Compiler
 
         public BlockID[] GetOptionLinks(List<ParsedBlock> allBlocks)
         {
-            //TODO
-            return new BlockID[0];
+            // Moves upwards one index and adds all options until the next prompt on that level
+            List<BlockID> optionIDs = new List<BlockID>();
+            BlockID checkID = new BlockID(blockID.id);
+            checkID.AddIndex();
+            ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
+
+            // Until it gets to a prompt or null, adds all otions to the optionIDs list.
+            while(checkBlock != null && checkBlock.isOptionBlock)
+            {
+                optionIDs.Add(checkID);
+
+                checkID.AddToLastIndex(1);
+                checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
+            }
+
+            // Returns the found option IDs
+            return optionIDs.ToArray();
         }
 
-        public BlockID GetRerouteLink(List<ParsedBlock> allBlocks)
+        public BlockID GetRerouteLink(List<ParsedBlock> allBlocks, string sectionName)
         {
-            //TODO: Reroute ID = SectionNameHash-0
-            //NOTE: Maybe have reroutes just get replaced w/ an ID and then get parsed and located at runtime?
-            return new BlockID(0);
+            // Generates the new ID
+            BlockID checkID = new BlockID(Compiler.GetStringHashInt(sectionName));
+            checkID.AddIndex();
+
+            // Checks if that ID exists
+            if(allBlocks.Find(x => x.blockID.Equals(checkID)) != null)
+            {
+                return checkID;
+            }
+
+            // Returns a ZERO ID if it doesn't
+            return BlockID.ZERO;
         }
 
         public BlockID GetReturnLink(List<ParsedBlock> allBlocks)
