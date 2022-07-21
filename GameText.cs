@@ -20,6 +20,9 @@ namespace TextAdventureGame
         public ConditionalText[] optionConditionals;
         public ConditionalText[] titleConditionals;
 
+        // Reroute
+        public string rerouteName;
+
 
         // CONSTRUCTORS //
         public GameText(string always, string asOption, string asTitle)

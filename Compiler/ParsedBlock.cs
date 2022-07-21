@@ -15,20 +15,18 @@ namespace TextAdventureGame.Compiler
         public DefaultLinkType defaultLinkType;
         public BlockID[] optionIDs;
         public BlockID defaultLinkID;
-        public bool isOption;
-        public int indentLevel;
+        public bool isOptionBlock;
 
 
         // CONSTRUCTORS //
-        public ParsedBlock(BlockID newID, DefaultLinkType linkType, GameText newText, int indent, bool option)
+        public ParsedBlock(BlockID newID, DefaultLinkType linkType, GameText newText, bool option)
         {
             blockID = newID;
             text = newText;
             defaultLinkType = linkType;
             optionIDs = new BlockID[0];
             defaultLinkID = BlockID.ZERO;
-            isOption = option;
-            indentLevel = indent;
+            isOptionBlock = option;
         }
 
 
@@ -50,7 +48,7 @@ namespace TextAdventureGame.Compiler
                 for (int i = 0; i < optionIDs.Length; i++)
                 {
                     // Finds the block for that ID
-                    Block refBlock = allRunnables.Find(x => x.blockID.Compare(optionIDs[i]));
+                    Block refBlock = allRunnables.Find(x => x.blockID.Equals(optionIDs[i]));
 
                     // Adds it to the array if it exists
                     if (refBlock != null)
@@ -64,12 +62,16 @@ namespace TextAdventureGame.Compiler
                         Program.DebugLog(string.Format("[PopulateRunnableVersion] Could not find Block ID {0}, but it is referenced in Block ID {1}!", optionIDs[i], blockID), true);
                     }
                 }
+
+                // Adds options to the runnable block
+                runnable.optionBlocks = runnableBlocks;
             }
 
             // Sets the default link block if there are no options
             else
             {
-                Block defaultLinkBlock = allRunnables.Find(x => x.blockID.Compare(defaultLinkID));
+                Block defaultLinkBlock = allRunnables.Find(x => x.blockID.Equals(defaultLinkID));
+                runnable.defaultLink = defaultLinkBlock;
 
                 // Logs an error if nothing was found
                 if(defaultLinkBlock == null)
@@ -112,28 +114,28 @@ namespace TextAdventureGame.Compiler
 
         public BlockID GetRerouteLink(List<ParsedBlock> allBlocks)
         {
-            //TODO: Reroute ID = Section hash (whatever algorithm I can use) + 0 (in second index)
+            //TODO: Reroute ID = SectionNameHash-0
             //NOTE: Maybe have reroutes just get replaced w/ an ID and then get parsed and located at runtime?
             return new BlockID(0);
         }
 
         public BlockID GetReturnLink(List<ParsedBlock> allBlocks)
         {
-            // Returns a zero ID if this block isn't an option
-            if(!isOption)
+            // Returns a zero ID if this block is a collector
+            if(isOptionBlock)
             {
                 return BlockID.ZERO;
             }
 
-            // Goes backwards in IDs until it finds one that is a prompt.
+            // Goes to the last ID on the previous level (this option's prompt)
             BlockID checkID = new BlockID(blockID.id);
-            checkID.AddToLastIndex(-1);
-            ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Compare(checkID));
+            checkID.RemoveLastIndex();
+            ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
             
-            while(checkBlock.isOption && checkBlock != null)
+            // If there is no block below this or it finds itself, returns ZERO.
+            if(checkBlock == null || checkBlock == this)
             {
-                checkID.AddToLastIndex(-1);
-                checkBlock = allBlocks.Find(x => x.blockID.Compare(checkID));
+                return BlockID.ZERO;
             }
 
             // When it finds one, returns it.
@@ -142,22 +144,17 @@ namespace TextAdventureGame.Compiler
 
         public BlockID GetContinueLink(List<ParsedBlock> allBlocks)
         {
-            // Returns a zero ID if this block isn't an option
-            if(!isOption)
-            {
-                return BlockID.ZERO;
-            }
-
-            // Goes forwards in IDs until it finds one that is a prompt. If it reaches null, it drops the last index and continues.
+            // Goes down one index, then forward in IDs until it finds one that is a prompt. If it reaches null, it drops the last index and continues.
             BlockID checkID = new BlockID(blockID.id);
+            checkID.RemoveLastIndex();
             checkID.AddToLastIndex(1);
-            ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Compare(checkID));
+            ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
 
             // Loop will run infinitely until it returns a value.
             while(true)
             {
                 // If the check block is a prompt, returns the ID
-                if(!checkBlock.isOption)
+                if(!checkBlock.isOptionBlock)
                 {
                     return checkID;
                 }
@@ -176,7 +173,7 @@ namespace TextAdventureGame.Compiler
 
                 // Adds 1 to the last index and keeps going
                 checkID.AddToLastIndex(1);
-                checkBlock = allBlocks.Find(x => x.blockID.Compare(checkID));
+                checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
             }
         }
     }
