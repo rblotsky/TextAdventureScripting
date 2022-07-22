@@ -402,3 +402,4 @@ ImportantCommands.txt
 *.csproj
 *.sln
 /bin
+/obj
