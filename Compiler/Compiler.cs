@@ -23,13 +23,6 @@ namespace TextAdventureGame.Compiler
         // FUNCTIONS //
         public Runnable.Game CompileGame(string sourceText)
         {
-            //TODO: Read all lines, make each block w/ its text and give it an ID.
-            //      Afterwards, autogenerate all their links, and then create Blocks from them and link those.
-            //      Finally, add the Blocks into a new Game, and return that.
-
-            // Replaces carriage return chars with spaces
-            //sourceText = sourceText.Replace('\r', ' ');
-
             // Split sourceText into an array of lines
             string[] lines = sourceText.Split("\n");
 
