@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAdventureGame.Runnable
+namespace TAScript.Compiler
 {
-    public enum UserInputType
+    public enum DefaultLinkType
     {
-        None,
-        Option,
-        Text,
+        Return,
+        Continue,
     }
 }

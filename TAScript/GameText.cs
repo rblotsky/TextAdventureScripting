@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TextAdventureGame.Runnable;
+using TAScript.Runnable;
 
-namespace TextAdventureGame
+namespace TAScript
 {
     public class GameText
     {

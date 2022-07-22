@@ -1,5 +1,4 @@
 $ ROOM_1_START
-
 - You find yourself in a dark room. You cannot see anything.
 >> [Feel your way around the room] You walk around, arms outstretched, trying to get a sense for what is in this room. ~
 >> [Wait] You wait for several minutes.

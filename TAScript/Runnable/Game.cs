@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAdventureGame.Runnable
+namespace TAScript.Runnable
 {
     public class Game
     {
@@ -22,6 +22,8 @@ namespace TextAdventureGame.Runnable
         public UserInputType InputType { get { return activeBlock.GetInputType(this); } }
         public Option[] AvailableOptions { get { return activeBlock.GetBlockOptions(this); } }
         public string CurrentTitleText { get { return activeBlock.GetBlockText(this, false); } }
+        public Block[] PreviousBlocksOrdered { get { return accessedBlocks.ToArray(); } }
+        public string[] PreviouslyDisplayedText { get { return displayedText.ToArray(); } }
 
 
         // FUNCTIONS //
@@ -48,7 +50,7 @@ namespace TextAdventureGame.Runnable
             // If the new block is the same as the active block, does nothing
             if(activeBlock == newBlock)
             {
-                Program.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!"), false);
+                DebugLogger.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!"), false);
                 return;
             }
 

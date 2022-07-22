@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TextAdventureGame.Runnable;
+using TAScript.Runnable;
 
-namespace TextAdventureGame.Compiler
+namespace TAScript.Compiler
 {
     public class ParsedBlock
     {
@@ -61,7 +61,7 @@ namespace TextAdventureGame.Compiler
                     // Logs an error if it doesn't
                     else
                     {
-                        Program.DebugLog(string.Format("[PopulateRunnableVersion] Could not find Block ID {0}, but it is referenced in Block ID {1}!", optionIDs[i], blockID), true);
+                        DebugLogger.DebugLog(string.Format("[PopulateRunnableVersion] Could not find Block ID {0}, but it is referenced in Block ID {1}!", optionIDs[i], blockID), true);
                     }
                 }
 
@@ -78,7 +78,7 @@ namespace TextAdventureGame.Compiler
                 // Logs an error if nothing was found, but the reroute isn't END
                 if(defaultLinkBlock == null)
                 {
-                    Program.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
+                    DebugLogger.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
                 }
             }
 

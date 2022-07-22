@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using TAScript;
 
-namespace TextAdventureGame.Compiler
+namespace TAScript.Compiler
 {
     public class Compiler
     {
@@ -111,7 +112,7 @@ namespace TextAdventureGame.Compiler
                     // If the indent amount difference is greater than 1, logs an error and stops.
                     if (indentAmountDifference > 1)
                     {
-                        Program.DebugLog(string.Format("[CompileGame] Indentation jump greater than 1 level on line {0}! Aborting.", currentLine), true);
+                        DebugLogger.DebugLog(string.Format("[CompileGame] Indentation jump greater than 1 level on line {0}! Aborting.", currentLine), true);
                         return null;
                     }
 

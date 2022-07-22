@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAdventureGame.Runnable
+namespace TAScript.Runnable
 {
     public struct Option
     {

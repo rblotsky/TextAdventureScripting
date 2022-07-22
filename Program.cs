@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using TextAdventureGame.Runnable;
-using TextAdventureGame.Compiler;
-using TextAdventureGame.Player;
+using TAScript.Runnable;
+using TAScript.Player;
 
-namespace TextAdventureGame
+namespace TAScript
 {
-
     class Program
     {
         // DATA //
@@ -17,19 +15,13 @@ namespace TextAdventureGame
         public static ConsoleColor INFO_COLOUR = ConsoleColor.White;
         public static ConsoleColor DEBUG_COLOUR = ConsoleColor.Yellow;
 
-        // Cached Data
-        private static bool isDebug = false;
-
 
         // FUNCTIONS //
         // Main
         static void Main(string[] args)
         {
-            // Sets debug value
-            if(args.Contains("--debug"))
-            {
-                isDebug = true;
-            }
+            // Sends the program debugger to the TAScript debugger
+            DebugLogger.debugDisplayer = DebugLog;
 
             // Prints prompt
             ColourConsole.WriteLine("Enter a text file to compile into a game. " +
@@ -37,7 +29,8 @@ namespace TextAdventureGame
             ColourConsole.WriteLine("Enter text:", PROMPT_COLOUR);
 
             // Gets the user input
-            string inputFilePath = Console.ReadLine();
+            string inputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../../..", Console.ReadLine());
+            DebugLogger.DebugLog(inputFilePath, false);
 
             // Creates the compiler w/ default options
             Compiler.Compiler compilerToUse = new Compiler.Compiler();
@@ -60,10 +53,7 @@ namespace TextAdventureGame
         // Debugging
         public static void DebugLog(string text, bool isError)
         {
-            if (isDebug)
-            {
-                ColourConsole.WriteLine(text, (isError ? ERROR_COLOUR : DEBUG_COLOUR));
-            }
+            ColourConsole.WriteLine(text, (isError ? ERROR_COLOUR : DEBUG_COLOUR));
         }
 
 

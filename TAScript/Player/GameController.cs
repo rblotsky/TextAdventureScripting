@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TextAdventureGame.Runnable;
+using TAScript.Runnable;
 
-namespace TextAdventureGame.Player
+namespace TAScript.Player
 {
     public class GameController
     {
+        // CONSTANTS //
+        public static readonly int MAX_PREV_TEXT_DISPLAYED = 5;
+
         // FUNCTIONS //
         public void PlayGame(Game runnableGame)
         {
@@ -22,7 +25,14 @@ namespace TextAdventureGame.Player
                 Console.Clear();
 
                 // Displays the already-displayed text
-                //TODO
+                for(int i = 0; i < runnableGame.PreviouslyDisplayedText.Length; i++)
+                {
+                    if (runnableGame.PreviouslyDisplayedText.Length - i <= MAX_PREV_TEXT_DISPLAYED)
+                    {
+                        ColourConsole.WriteLine(runnableGame.PreviouslyDisplayedText[i], ConsoleColor.Gray);
+                        ColourConsole.WriteLine("---------------------------", ConsoleColor.DarkGray);
+                    }
+                }
 
                 // Gets the data for the current game block
                 string currentText = runnableGame.CurrentTitleText;
@@ -64,7 +74,6 @@ namespace TextAdventureGame.Player
 
                 else if(inputRequired == UserInputType.Text)
                 {
-                    ColourConsole.Write("I have no idea what to do for text input yet? Maybe have the Block provide a string that says what the prompt should be.");
                     //TODO
                 }
             }

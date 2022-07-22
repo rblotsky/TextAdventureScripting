@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace TextAdventureGame
+namespace TAScript
 {
     /// <summary>
     /// Console Color Helper class that provides coloring to individual commands
