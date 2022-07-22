@@ -92,6 +92,7 @@ namespace TextAdventureGame.Compiler
             if(!string.IsNullOrEmpty(rerouteSection))
             {
                 defaultLinkID = GetRerouteLink(allBlocks);
+                return; // Reroutes CAN be null (@END) so we need to return to avoid making it a return link instead.
             }
 
             // If the default link ID is still ZERO, tries getting options and other default links
@@ -124,10 +125,13 @@ namespace TextAdventureGame.Compiler
             checkID.AddIndex();
             ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
 
-            // Until it gets to a prompt or null, adds all otions to the optionIDs list.
-            while(checkBlock != null && checkBlock.isOptionBlock)
+            // Until it reaches NULL, adds all option blocks to the optionIDs list.
+            while(checkBlock != null)
             {
-                optionIDs.Add(checkID);
+                if (checkBlock.isOptionBlock)
+                {
+                    optionIDs.Add(checkID.CopyID());
+                }
 
                 checkID.AddToLastIndex(1);
                 checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
@@ -146,7 +150,7 @@ namespace TextAdventureGame.Compiler
             // Checks if that ID exists
             if(allBlocks.Find(x => x.blockID.Equals(checkID)) != null)
             {
-                return checkID;
+                return checkID.CopyID();
             }
 
             // Returns a ZERO ID if it doesn't
@@ -155,12 +159,6 @@ namespace TextAdventureGame.Compiler
 
         public BlockID GetReturnLink(List<ParsedBlock> allBlocks)
         {
-            // Returns a zero ID if this block is a collector
-            if(isOptionBlock)
-            {
-                return BlockID.ZERO;
-            }
-
             // Goes to the last ID on the previous level (this option's prompt)
             BlockID checkID = new BlockID(blockID.id);
             checkID.RemoveLastIndex();
@@ -173,7 +171,7 @@ namespace TextAdventureGame.Compiler
             }
 
             // When it finds one, returns it.
-            return checkID;
+            return checkID.CopyID();
         }
 
         public BlockID GetContinueLink(List<ParsedBlock> allBlocks)
@@ -187,16 +185,17 @@ namespace TextAdventureGame.Compiler
             // Loop will run infinitely until it returns a value.
             while(true)
             {
-                // If the check block is a prompt, returns the ID
-                if(!checkBlock.isOptionBlock)
-                {
-                    return checkID;
-                }
-
-                // If the check block is null, drops last index
-                else if(checkBlock == null)
+                
+                // If the check block is null, drops the last index
+                if (checkBlock == null)
                 {
                     checkID.RemoveLastIndex();
+                }
+
+                // If the check block is prompt, returns the ID
+                else if (!checkBlock.isOptionBlock)
+                {
+                    return checkID.CopyID();
                 }
 
                 // If the ID length is now the minimum, can only be followed by null - so will return ZERO.

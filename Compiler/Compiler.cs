@@ -14,9 +14,9 @@ namespace TextAdventureGame.Compiler
         public static readonly Regex COMMENT_REGEX = new Regex(@"\/\/.*");
         public static readonly Regex SECTION_HEADER_REGEX = new Regex(@"^\$\s*(\w+)");
         public static readonly Regex BLOCK_REGEX = new Regex(@"^([-]+|[>]+)(.+)$");
-        public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)$");
+        public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)");
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
-        public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]\n]*)(\[.*\])?(.*)");
+        public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(\[(?:.|[\r\n])*\])?((?:.|[\r\n])*)", RegexOptions.Multiline);
 
 
         // CONSTRUCTORS //
@@ -63,20 +63,20 @@ namespace TextAdventureGame.Compiler
                     if (parsedBlocks.Count > 0)
                     {
                         // Splits the text into the alwas, option, and title text
-                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(editedLine);
+                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(currentBlockText);
                         string alwaysText = textSplitterMatch.Groups[1].Value;
                         string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
                         string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
                         parsedBlocks[parsedBlocks.Count - 1].text = new GameText(alwaysText, asOptionText, asTitleText);
 
                         // Updates the default link type
-                        if (editedLine.EndsWith("~"))
+                        if (currentBlockText.EndsWith("~"))
                         {
                             parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Continue;
                         }
 
                         // Sets the reroute if there is one
-                        Match rerouteMatch = REROUTE_REGEX.Match(editedLine);
+                        Match rerouteMatch = REROUTE_REGEX.Match(currentBlockText);
                         if (rerouteMatch.Success)
                         {
                             parsedBlocks[parsedBlocks.Count - 1].rerouteSection = rerouteMatch.Groups[0].Value;
@@ -106,27 +106,24 @@ namespace TextAdventureGame.Compiler
                     if (parsedBlocks.Count > 0)
                     {
                         // Splits the text into the alwas, option, and title text
-                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(editedLine);
+                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(currentBlockText);
                         string alwaysText = textSplitterMatch.Groups[1].Value;
                         string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
                         string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
                         parsedBlocks[parsedBlocks.Count - 1].text = new GameText(alwaysText, asOptionText, asTitleText);
 
                         // Updates the default link type
-                        if (editedLine.EndsWith("~"))
+                        if (currentBlockText.Contains("~"))
                         {
                             parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Continue;
                         }
 
                         // Sets the reroute if there is one
-                        Match rerouteMatch = REROUTE_REGEX.Match(editedLine);
+                        Match rerouteMatch = REROUTE_REGEX.Match(currentBlockText);
                         if (rerouteMatch.Success)
                         {
                             parsedBlocks[parsedBlocks.Count - 1].rerouteSection = rerouteMatch.Groups[1].Value;
                         }
-
-                        // Iterates the current ID
-                        currentBlockID.AddToLastIndex(1);
                     }
 
                     // Clears the current block text
@@ -151,6 +148,12 @@ namespace TextAdventureGame.Compiler
                             currentBlockID.AddIndex();
                         }
                     }
+
+                    // Adds to the last ID index only if we didn't change level
+                    if(indentAmountDifference <= 0)
+                    {
+                        currentBlockID.AddToLastIndex(1);
+                    }
                     
 
                     // If the indent amount difference is greater than 1, logs an error and stops.
@@ -161,7 +164,7 @@ namespace TextAdventureGame.Compiler
                     }
 
                     // Creates the new ParsedBlock, adds it to the parsed blocks list
-                    parsedBlocks.Add(new ParsedBlock(new BlockID(currentBlockID.id), DefaultLinkType.Return, null, isOption, null));
+                    parsedBlocks.Add(new ParsedBlock(currentBlockID.CopyID(), DefaultLinkType.Return, null, isOption, null));
 
                     // Gets the rest of the text and adds it to the current text
                     editedLine = WHITESPACE_UNTIL_CONTENT_REGEX.Replace(editedLine, "", 1);
@@ -195,7 +198,6 @@ namespace TextAdventureGame.Compiler
 
             // Returns the generated game
             return compiledGame;
-        
         }
 
 
