@@ -75,8 +75,8 @@ namespace TextAdventureGame.Compiler
                 Block defaultLinkBlock = allRunnables.Find(x => x.blockID.Equals(defaultLinkID));
                 runnable.defaultLink = defaultLinkBlock;
 
-                // Logs an error if nothing was found
-                if(defaultLinkBlock == null)
+                // Logs an error if nothing was found, but the reroute isn't END
+                if(defaultLinkBlock == null && !rerouteSection.Equals("END"))
                 {
                     Program.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
                 }
