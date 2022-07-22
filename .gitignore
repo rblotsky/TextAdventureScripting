@@ -401,5 +401,5 @@ FodyWeavers.xsd
 ImportantCommands.txt
 *.csproj
 *.sln
-/bin/
-/obj/
+[Bb]in/
+[Oo]bj/
