@@ -10,7 +10,7 @@ namespace TAScript.Player
     public class GameController
     {
         // CONSTANTS //
-        public static readonly int MAX_PREV_TEXT_DISPLAYED = 5;
+        public static readonly int MAX_PREV_TEXT_DISPLAYED = 1;
 
         // FUNCTIONS //
         public void PlayGame(Game runnableGame)
@@ -77,6 +77,9 @@ namespace TAScript.Player
                     //TODO
                 }
             }
+
+            // After it is finished, displays the list of blocks
+            runnableGame.LogBlockGraph();
         }
         
     }

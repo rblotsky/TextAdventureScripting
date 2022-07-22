@@ -73,5 +73,55 @@ namespace TAScript.Runnable
         {
             StartNewBlock(selectedOption.newBlock);
         }
+
+        
+        // Debug
+        public void LogBlockGraph()
+        {
+            // Caches the string to display
+            string allBlocksDisplay = "";
+
+            // Caches the displayed blocks to prevent loops
+            List<Block> displayedBlocks = new List<Block>();
+
+            // Displays it
+            Queue<Block> displayBlocks = new Queue<Block>();
+            displayBlocks.Enqueue(initialBlock);
+
+            while(displayBlocks.Count > 0)
+            {
+                // Gets this block
+                Block thisBlock = displayBlocks.Dequeue();
+
+                // If this block has already been displayed, does nothing
+                if(displayedBlocks.Contains(thisBlock))
+                {
+                    continue;
+                }
+
+                // Adds its links to the queue
+                if (thisBlock.optionBlocks != null)
+                {
+                    foreach (Block option in thisBlock.optionBlocks)
+                    {
+                        displayBlocks.Enqueue(option);
+                    }
+                }
+
+                if (thisBlock.defaultLink != null)
+                {
+                    displayBlocks.Enqueue(thisBlock.defaultLink);
+                }
+                
+                // Adds this block to the display
+                allBlocksDisplay += thisBlock.blockID.ToString() + "\n";
+
+                // Remembers that this block has been displayed
+                displayedBlocks.Add(thisBlock);
+            }
+
+            // Displays the text
+            //DebugLogger.DebugLog(allBlocksDisplay, false);
+        }
     }
 }
