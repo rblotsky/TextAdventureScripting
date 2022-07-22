@@ -36,9 +36,7 @@ An example adventure might be as follows:
     $ END
 
 
-# Writing in the language
-If you want to write a text adventure in the (currently unnamed) language used by this compiler, follow this guide.
-
+# Writing TAScript (Text-Adventure-Script)
 ## Building Blocks
 There are 3 main building blocks:
 - Sections (Denoted by `$`):
