@@ -1,1 +1,0 @@
-﻿java -jar PATH_TO_ANTLR_JAR -Dlanguage=CSharp Compiler/TextAdvLang.g4
