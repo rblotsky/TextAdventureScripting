@@ -20,10 +20,6 @@ namespace TextAdventureGame.Compiler
         public static readonly Regex CONTINUE_REGEX = new Regex(@"~\s?$", RegexOptions.Multiline);
 
 
-        // CONSTRUCTORS //
-        //TODO
-
-
         // FUNCTIONS //
         public Runnable.Game CompileGame(string sourceText)
         {
