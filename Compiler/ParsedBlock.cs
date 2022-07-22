@@ -76,7 +76,7 @@ namespace TextAdventureGame.Compiler
                 runnable.defaultLink = defaultLinkBlock;
 
                 // Logs an error if nothing was found, but the reroute isn't END
-                if(defaultLinkBlock == null && !rerouteSection.Equals("END"))
+                if(defaultLinkBlock == null)
                 {
                     Program.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
                 }
@@ -185,7 +185,6 @@ namespace TextAdventureGame.Compiler
             // Loop will run infinitely until it returns a value.
             while(true)
             {
-                
                 // If the check block is null, drops the last index
                 if (checkBlock == null)
                 {
@@ -199,7 +198,7 @@ namespace TextAdventureGame.Compiler
                 }
 
                 // If the ID length is now the minimum, can only be followed by null - so will return ZERO.
-                else if(checkID.idLength == BlockID.MIN_ID_LEN)
+                if(checkID.idLength == BlockID.MIN_ID_LEN)
                 {
                     return BlockID.ZERO;
                 }

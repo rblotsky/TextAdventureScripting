@@ -1,0 +1,28 @@
+$ ROOM_1_START
+
+- You find yourself in a dark room. You cannot see anything.
+>> [Feel your way around the room] You walk around, arms outstretched, trying to get a sense for what is in this room. ~
+>> [Wait] You wait for several minutes.
+>>> [Wait More] You continue to wait for another few minutes. @ROOM_1_WAIT
+>>> [Feel your way around the room] You walk around, arms outstretched, trying to get a sense for what is in this room. ~
+
+- You get a general sense for what is in the room. It appears to be very small, and perfectly square. 
+Directly in front of you is a table, with a flashlight on it.
+>> [Turn on the flashlight] You pick up the flashlight and turn it on. Suddenly, you can see the room much more clearly! 
+The walls are entirely concrete, but behind the (wooden!) table is a steel door.
+	>>> [Open the door] You squeeze past the table to reach the door. 
+As you start opening it, light begins to fill the room, until finally it is flooded with a cool blue light from behind the door. @START_HALLWAY
+	>>> [Look around more] You try to search further around the room, using your flashlight. 
+	The room is extraordinarily bland, however you do notice that the ceiling is actually made of steel, much like the door. @ROOM_1_WAIT
+
+>> [Continue searching] You ignore the flashlight, choosing to continue searching in the dark. ~
+
+-- Searching in the dark yields few results. With no light, it is hard to find a way around the table in front of you. @ROOM_1_WAIT
+
+$ ROOM_1_WAIT
+- Suddenly, a blinding light fills the room. As you slowly gather your senses, you see a blue sky where the ceiling once was. @END
+
+$ START_HALLWAY
+- Hello World! @END
+
+$ END
