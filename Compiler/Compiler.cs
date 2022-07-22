@@ -12,9 +12,11 @@ namespace TextAdventureGame.Compiler
         // DATA //
         // Constants
         public static readonly Regex COMMENT_REGEX = new Regex(@"\/\/.*");
-        public static readonly Regex SECTION_HEADER_REGEX = new Regex(@"^$\s*(\w+)");
-        public static readonly Regex BLOCK_REGEX = new Regex(@"([-]+|[>]+)");
+        public static readonly Regex SECTION_HEADER_REGEX = new Regex(@"^\$\s*(\w+)");
+        public static readonly Regex BLOCK_REGEX = new Regex(@"^([-]+|[>]+)(.+)$");
         public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)$");
+        public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
+        public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]\n]*)(\[.*\])?(.*)");
 
 
         // CONSTRUCTORS //
@@ -32,6 +34,7 @@ namespace TextAdventureGame.Compiler
             string[] lines = sourceText.Split("\n");
 
             // Caches some important data
+            int currentLine = 0;
             int currentSectionHash = 0;
             BlockID currentBlockID = BlockID.ZERO;
             string currentBlockText = "";
@@ -42,15 +45,48 @@ namespace TextAdventureGame.Compiler
             // Iterates over all lines, creating blocks where necessary.
             foreach(string line in lines)
             {
+                // Increments current line
+                currentLine++;
+
                 // First removes the comments from the line
                 string editedLine = COMMENT_REGEX.Replace(line, "");
 
-                // Then, checks if this is a section header. If so, updates the current section hash and block ID.
+                // Then, removes the initial whitespace
+                editedLine = WHITESPACE_UNTIL_CONTENT_REGEX.Replace(editedLine, "", 1);
+
+                // Then, checks if this is a section header. If so, updates the current section hash and block ID. (If it is, finishes the current block!)
                 Match regexMatch = SECTION_HEADER_REGEX.Match(editedLine);
 
                 if(regexMatch.Success)
                 {
-                    currentSectionHash = GetStringHashInt(regexMatch.Groups[0].Value);
+                    // Finishes the last ParsedBlock
+                    if (parsedBlocks.Count > 0)
+                    {
+                        // Splits the text into the alwas, option, and title text
+                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(editedLine);
+                        string alwaysText = textSplitterMatch.Groups[1].Value;
+                        string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
+                        string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
+                        parsedBlocks[parsedBlocks.Count - 1].text = new GameText(alwaysText, asOptionText, asTitleText);
+
+                        // Updates the default link type
+                        if (editedLine.EndsWith("~"))
+                        {
+                            parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Continue;
+                        }
+
+                        // Sets the reroute if there is one
+                        Match rerouteMatch = REROUTE_REGEX.Match(editedLine);
+                        if (rerouteMatch.Success)
+                        {
+                            parsedBlocks[parsedBlocks.Count - 1].rerouteSection = rerouteMatch.Groups[0].Value;
+                        }
+                    }
+
+                    
+
+                    // Updates the current block ID to start the new section
+                    currentSectionHash = GetStringHashInt(regexMatch.Groups[1].Value);
                     currentBlockID = new BlockID(currentSectionHash, BlockID.MIN_INDEX_VAL);
                     continue;
                 }
@@ -61,16 +97,104 @@ namespace TextAdventureGame.Compiler
                     continue;
                 }
 
-                // If we are not in a section, checks if this is a prompt or option. If it is, closes the last block and creates a new one.
+                // If we are not in a section, checks if this is a prompt or option. Creates a new ParsedBlock from the data.
                 regexMatch = BLOCK_REGEX.Match(editedLine);
 
                 if (regexMatch.Success)
                 {
+                    // Finishes the last ParsedBlock
+                    if (parsedBlocks.Count > 0)
+                    {
+                        // Splits the text into the alwas, option, and title text
+                        Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(editedLine);
+                        string alwaysText = textSplitterMatch.Groups[1].Value;
+                        string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
+                        string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
+                        parsedBlocks[parsedBlocks.Count - 1].text = new GameText(alwaysText, asOptionText, asTitleText);
+
+                        // Updates the default link type
+                        if (editedLine.EndsWith("~"))
+                        {
+                            parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Continue;
+                        }
+
+                        // Sets the reroute if there is one
+                        Match rerouteMatch = REROUTE_REGEX.Match(editedLine);
+                        if (rerouteMatch.Success)
+                        {
+                            parsedBlocks[parsedBlocks.Count - 1].rerouteSection = rerouteMatch.Groups[1].Value;
+                        }
+
+                        // Iterates the current ID
+                        currentBlockID.AddToLastIndex(1);
+                    }
+
+                    // Clears the current block text
+                    currentBlockText = "";
+
+                    // Starts the new ParsedBlock
+                    // Creates a new ParsedBlock from data on this line
+                    bool isOption = (regexMatch.Groups[1].Value[0] == '>' ? true : false);
+
+                    // Gets indent amount and uses that to modify the current block ID.
+                    int indentAmountDifference = regexMatch.Groups[1].Length - currentBlockID.idLength+1;
+                    int indexModSign = (indentAmountDifference < 0 ? -1 : 1);
+                    for(int i = 0; i < Math.Abs(indentAmountDifference); i++)
+                    {
+                        if(indexModSign < 0)
+                        {
+                            currentBlockID.RemoveLastIndex();
+                        }
+
+                        else
+                        {
+                            currentBlockID.AddIndex();
+                        }
+                    }
+                    
+
+                    // If the indent amount difference is greater than 1, logs an error and stops.
+                    if(indentAmountDifference > 1)
+                    {
+                        Program.DebugLog(string.Format("[CompileGame] Indentation jump greater than 1 level on line {0}! Aborting.", currentLine), true);
+                        return null;
+                    }
+
+                    // Creates the new ParsedBlock, adds it to the parsed blocks list
+                    parsedBlocks.Add(new ParsedBlock(new BlockID(currentBlockID.id), DefaultLinkType.Return, null, isOption, null));
+
+                    // Gets the rest of the text and adds it to the current text
+                    editedLine = WHITESPACE_UNTIL_CONTENT_REGEX.Replace(editedLine, "", 1);
+                    currentBlockText += editedLine + "\n";
+                }
+
+                // If this is not the start of a prompt or section, but currentBlockText isn't empty, adds whatever text (excluding initial whitespace) to it.
+                else if(!string.IsNullOrEmpty(currentBlockText))
+                {
+                    currentBlockText += editedLine + "\n";
                 }
             }
 
+            // Runs through all the parsed blocks and autolinks them, also generating the new runnable blocks.
+            List<Runnable.Block> runnableBlocks = new List<Runnable.Block>();
+            foreach (ParsedBlock block in parsedBlocks)
+            {
+                block.GenerateAllLinks(parsedBlocks);
+                runnableBlocks.Add(block.ConvertToRunnable());
+            }
+
+            // Populates the runnable blocks (this is done after the previous loop because it requires that ALL runnable blocks be generated)
+            foreach(ParsedBlock block in parsedBlocks)
+            {
+                block.PopulateRunnableVersion(runnableBlocks.Find(x => x.blockID.Equals(block.blockID)), runnableBlocks);
+            }
+
+            // Generates a Game object and fills it with the new Blocks
+            Runnable.Game compiledGame = new Runnable.Game();
+            compiledGame.initialBlock = runnableBlocks[0];
+
             // Returns the generated game
-            return null;
+            return compiledGame;
         
         }
 
