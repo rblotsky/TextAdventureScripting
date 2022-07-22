@@ -1,0 +1,3 @@
+﻿java -jar C:\Users\Roman\Downloads\antlr-4.10.1-complete.jar -Dlanguage=CSharp Compiler/TextAdvLang.g4
+C:\Users\Roman\Downloads\TextAdvTest.txt
+C:\Users\Roman\source\repos\TextAdventureScripting\Text_Adventure_2.txt
