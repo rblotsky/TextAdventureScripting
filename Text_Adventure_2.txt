@@ -17,12 +17,46 @@ As you start opening it, light begins to fill the room, until finally it is floo
 
 >> [Continue searching] You ignore the flashlight, choosing to continue searching in the dark. ~
 
--- Searching in the dark yields few results. With no light, it is hard to find a way around the table in front of you. @ROOM_1_WAIT
+- Searching in the dark yields few results. With no light, it is hard to find a way around the table in front of you. @ROOM_1_WAIT
 
 $ ROOM_1_WAIT
-- Suddenly, a blinding light fills the room. As you slowly gather your senses, you see a blue sky where the ceiling once was. @END
+- Suddenly, a blinding light fills the room. As you slowly gather your senses, you see a blue sky where the ceiling once was.
+ There is a door on the other side of the room, and a flashlight on a table in front of you.
+ It appears the wall is more rough than you expected, and seems climbable.
+>> [Open the door] You open the door. @START_HALLWAY
+>> [Climb the wall] You climb up the wall, and out onto a roof. @ROOF_1
+>> [Wait] You wait.
+
+$ ROOM_1_POST_START
+- You are back in the room where you started. The roof is missing, there is an open door on one side, and a wooden table in the middle.
+  The wall is very rough, and seems climbable.
+>> [Climb the wall] You climb up the wall, and out onto a roof. @ROOF_1
+>> [Go through the door] You walk through the door, and into a hallway. @START_HALLWAY
 
 $ START_HALLWAY
-- Hello World! @END
+- You are in a long, steel hallway lit with cool fluorescent lights. On one end is the room you awoke in, and on the other a laboratory.
+>> [Go to the lab] You go to the lab (TODO) @END
+>> [Go to the room] You return to the room. @ROOM_1_POST_START
 
-$ END
+$ ROOF_1
+- You are on the roof of a central building. There is a hole leading into the room you started in.
+  Sprawling out around you is a complicated maze of passageways, rooms, and machinery, surrounded by a forest.
+>> [Climb into the room] You climb back into the room you awoke in. @ROOM_1_POST_START
+>> [Approach the edge of the building] You approach the edge of the building.
+   Looking over the edge, you can see a vertical drop onto some grass. You doubt you can survive if you jump.
+>>> [Jump onto the grass] You jump off the wall, and hit the grass headfirst. The last thing you hear is a loud ringing in your ears. @END
+>>> [Look for a way down] As you look around, you notice a ladder not far from where you stand.
+>>>> [Climb down the ladder] You climb down the ladder. Now on the grass, you see a dense forest in front of you, and a ring of grass around the building
+>>>>> [Go into the forest] You walk into the dense forest. @FOREST_FROM_START
+>>>>> [Walk around the building] You begin to walk around the building.
+      You see a wide variety of different rooms, of different materials and sizes.
+      None of these rooms have windows, preventing you from seeing inside.
+      Eventually, you return to where you started.
+>>>>> [Climb back up] You climb back onto the roof.  @ROOF_1
+>>>> [Jump onto the grass] Ignoring the ladder, you jump off the wall. The last thing you hear is a loud ringing in your ears. @END
+>>>> [Wait]
+
+$ FOREST_FROM_START 
+- You are in a forest. @END
+
+$ END 
