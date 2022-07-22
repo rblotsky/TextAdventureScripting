@@ -35,12 +35,12 @@ namespace TextAdventureGame
             if(args.Contains("--autogame"))
             {
                 // Autogenerates a game
-                Block startBlock = new Block("0", new GameText("You are in the first room. What do you do?", "", ""));
-                Block optionA = new Block("0", new GameText("Option A", "?", " Was the best option."));
-                Block optionB = new Block("0", new GameText("Option B", "?", " Gives a sub-option!"));
-                Block optionB1 = new Block("0", new GameText("Option B1", "?", " was bad. Tough luck!"));
-                Block optionB2 = new Block("0", new GameText("Option B2", "?", " was good! Congratulations!"));
-                Block continueBlock = new Block("0", new GameText("You are in a new room after the first option. This is the victory room! You've won! Congrats!", "", ""));
+                Block startBlock = new Block(BlockID.ZERO, new GameText("You are in the first room. What do you do?", "", ""));
+                Block optionA = new Block(BlockID.ZERO, new GameText("Option A", "?", " Was the best option."));
+                Block optionB = new Block(BlockID.ZERO, new GameText("Option B", "?", " Gives a sub-option!"));
+                Block optionB1 = new Block(BlockID.ZERO, new GameText("Option B1", "?", " was bad. Tough luck!"));
+                Block optionB2 = new Block(BlockID.ZERO, new GameText("Option B2", "?", " was good! Congratulations!"));
+                Block continueBlock = new Block(BlockID.ZERO, new GameText("You are in a new room after the first option. This is the victory room! You've won! Congrats!", "", ""));
 
                 startBlock.optionBlocks = new Block[2] { optionA, optionB };
                 startBlock.defaultLink = continueBlock;

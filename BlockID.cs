@@ -97,7 +97,7 @@ namespace TextAdventureGame
             // Removes last index unless its at the min ID length
             if(idLength != MIN_ID_LEN)
             {
-                id.Remove(idLength - 1);
+                id.RemoveAt(idLength - 1);
             }
             
             // Returns this ID, modified earlier.
