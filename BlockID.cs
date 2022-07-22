@@ -104,6 +104,11 @@ namespace TextAdventureGame
             return this;
         }
 
+        public BlockID CopyID()
+        {
+            return new BlockID(id);
+        }
+
 
         // Overrides
         public override bool Equals(object obj)

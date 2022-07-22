@@ -76,7 +76,7 @@ namespace TextAdventureGame
             // Tries playing (this won't actually do anything right now)
             if(compiledGame != null)
             {
-                //GameController.PlayGame(compiledGame);
+                new GameController().PlayGame(compiledGame);
             }
             else
             {
