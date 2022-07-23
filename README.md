@@ -8,13 +8,14 @@ TAScript is a simple scripting language that allows creating choose-your-own-sto
 
 An example adventure might be as follows:
 
+```csharp
     // Comment
 
-    $ SECTION1
+    $ SECTION1 // This is a section header
 
     - You enter a section titled “Section1”.
-      For some reason, you are presented with a choice to make. Which option do you choose?
-    >> Option A[] Led you deeper into an options tree! Oh no!
+      For some reason, you are presented with a choice to make. Which option do you choose? // This block is a Prompt (but not an option)
+    >> Option A[] Led you deeper into an options tree! Oh no! // This block is an option (that has sub-options_
     >>> Option A.1[] went to a new branch. ~
     >>> Option A.2[] went in a circle and back to this branch.
 
@@ -35,7 +36,7 @@ An example adventure might be as follows:
     - Section 2 has nothing of interest. The game is over. @END
 
     $ END
-
+```
 
 # Writing TAScript (Text-Adventure-Script)
 ## Building Blocks
