@@ -29,7 +29,7 @@ namespace TAScript
             ColourConsole.WriteLine("Enter text:", PROMPT_COLOUR);
 
             // Gets the user input
-            string inputFilePath = Path.Combine(Directory.GetCurrentDirectory(), "../../..", Console.ReadLine());
+            string inputFilePath = Path.Combine(Console.ReadLine());
             DebugLogger.DebugLog(inputFilePath, false);
 
             // Creates the compiler w/ default options

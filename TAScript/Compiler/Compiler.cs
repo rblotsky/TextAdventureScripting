@@ -18,7 +18,7 @@ namespace TAScript.Compiler
         public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)");
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
         public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(?:(?:\[)((?:.|[\r\n])*?)(?:\]))?((?:.|[\r\n])*)", RegexOptions.Multiline);
-        public static readonly Regex CONTINUE_REGEX = new Regex(@"~\s?$", RegexOptions.Multiline);
+        public static readonly Regex RETURN_REGEX = new Regex(@"~\s?$", RegexOptions.Multiline);
 
 
         // FUNCTIONS //
@@ -117,7 +117,7 @@ namespace TAScript.Compiler
                     }
 
                     // Creates the new ParsedBlock, adds it to the parsed blocks list
-                    parsedBlocks.Add(new ParsedBlock(currentBlockID.CopyID(), DefaultLinkType.Return, null, isOption, null));
+                    parsedBlocks.Add(new ParsedBlock(currentBlockID.CopyID(), DefaultLinkType.Continue, null, isOption, null));
 
                     // Gets the rest of the text and adds it to the current text
                     editedLine = WHITESPACE_UNTIL_CONTENT_REGEX.Replace(editedLine, "", 1);
@@ -161,10 +161,10 @@ namespace TAScript.Compiler
                 // Trims the current block text
                 currentBlockText = currentBlockText.Trim();
                 // Updates the default link type
-                Match continueMatch = CONTINUE_REGEX.Match(currentBlockText);
+                Match continueMatch = RETURN_REGEX.Match(currentBlockText);
                 if (continueMatch.Success)
                 {
-                    parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Continue;
+                    parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Return;
                     currentBlockText = currentBlockText.Replace(continueMatch.Value, "");
                 }
 
