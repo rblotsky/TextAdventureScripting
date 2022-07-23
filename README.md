@@ -8,16 +8,16 @@ TAScript is a simple scripting language that allows creating choose-your-own-sto
 
 An example adventure might be as follows:
 
-```csharp
+```javascript
     // Comment
 
     $ SECTION1 // This is a section header
 
     - You enter a section titled “Section1”.
-      For some reason, you are presented with a choice to make. Which option do you choose? // This block is a Prompt (but not an option)
-    >> Option A[] Led you deeper into an options tree! Oh no! // This block is an option (that has sub-options_
-    >>> Option A.1[] went to a new branch. ~
-    >>> Option A.2[] went in a circle and back to this branch.
+      For some reason, you are presented with a choice to make. Which option do you choose? // This is a prompt
+    >> Option A[] Led you deeper into an options tree! Oh no! // This is an option (that has sub-options!)
+    >>> Option A.1[] went to a new branch. ~ // This block continues to the next Prompt ("How do you...")
+    >>> Option A.2[] went in a circle and back to this branch. // This block returns to the previous prompt
 
     -- How do you get out of the second branch of the options tree?
     >>> Huh??[], you ask in confusion. Nothing changes.
