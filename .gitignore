@@ -399,7 +399,5 @@ FodyWeavers.xsd
 
 # Special local files
 ImportantCommands.txt
-*.csproj
-*.sln
-[Bb]in/*
-[Oo]bj/*
+/LocalScripts/
+*.tascript
