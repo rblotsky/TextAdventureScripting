@@ -60,7 +60,7 @@ Comments are denoted with a `//` symbol. If a line contains a comment, *the enti
 As in Python, "indentation" is highly important here. However, "indents" are not considered actual tabs or whitespace, but the amount of</b>
 indent characters (`-` or `>`) before the line.
 
-Any Options **must** be 1 indent level *higher* than the previous block.</b>
+Any Options **must** be 1 indent level **higher** than the previous block.</b>
 If a continue (`~`) point is used, it will continue to the next Prompt (`-`) one or more levels *below* itself.
 
 ## Special Sections & Reroutes
