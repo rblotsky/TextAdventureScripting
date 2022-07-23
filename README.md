@@ -20,15 +20,15 @@ An example adventure might be as follows:
 
     -- How do you get out of the second branch of the options tree?
     >>> Huh??[], you ask in confusion. Nothing changes.
-    >>> [Climb down] You climb down the tree. There’s something at the bottom! ~
+    >>> [Climb down]You climb down the tree. There’s something at the bottom! ~
 
-    >> Option B @SECTION2
-    >> Option C ~ 
+    >> Option B[]Goes to section 2! @SECTION2
+    >> Option C[]Lets you go to the next prompt! ~ 
 
     - You reach a new prompt to deal with... What’ll you do?
-    >> [Win the game!] You try to ‘win the game’, but you do not win the game. Do you even know how?
-    >> [Sit and wait.] You sit and wait. That worked! Now you’re free! @END
-    >> [Scream angrily.] You yell out into the void. Nothing happens.
+    >> [Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how?
+    >> [Sit and wait.]You sit and wait. That worked! Now you’re free! @END
+    >> [Scream angrily.]You yell out into the void. Nothing happens.
 
     $ SECTION2
 
