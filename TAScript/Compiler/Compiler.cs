@@ -18,7 +18,9 @@ namespace TAScript.Compiler
         public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)");
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
         public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(?:(?:\[)((?:.|[\r\n])*?)(?:\]))?((?:.|[\r\n])*)", RegexOptions.Multiline);
-        public static readonly Regex RETURN_REGEX = new Regex(@"~\s?$", RegexOptions.Multiline);
+        public static readonly Regex RETURN_REGEX = new Regex(@"\s*?(#\w*)?$", RegexOptions.Multiline);
+        public static readonly Regex COMMAND_REGEX = new Regex(@"{\w+:.*}");
+        public static readonly Regex TAG_REGEX = new Regex(@"#\w+");
 
 
         // FUNCTIONS //
