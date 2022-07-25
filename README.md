@@ -101,10 +101,11 @@ Everything placed within `{` `}` is considered a command.
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
 ## Valid Commands:
++--------------+-----------+---------------+
 | Command Name | Variables | Functionality |
-|--------------|-----------|---------------|
-| RANDOM       | Text Value| Gets replaced with a random value from the variables. |
++==============+===========+===============+
+| RANDOM       | Text Value\| Gets replaced with a random value from the variables. \|
 |              | (can be given any amount of text values)|               |
-|--------------|-----------|---------------|
++--------------+-----------+---------------+
 
 
