@@ -86,6 +86,25 @@ Text can contain special `[` and `]` characters to split it into multiple parts:
 - The text *inside* the brackets is displayed only *as an option*
 - The text *after* the brackets is displayed only *after selecting the block*
 
+*Note: This happens after parsing commands! If you add a square bracket within a command, it might not be used to split text.*
 
+## Commands
+Commands are special expressions that can be placed ONLY within Block text, and can perform a number of things. For example, the "RANDOM" command </b>
+can be used to randomize what text is displayed somewhere.
+
+Commands have a simple syntax: `{COMMAND_NAME:Variable,Variable,...,Variable}` </b>
+Everything placed within `{` `}` is considered a command.
+
+- `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names </b>
+   later in this document.
+- `Variables`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. </b>
+   Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
+   
+## Valid Commands:
+| Command Name | Variables | Functionality |
+|--------------|-----------|---------------|
+| RANDOM       | Text Value| Gets replaced with a random value from the variables. |
+|              | (can be given any amount of text values)|               |
+|--------------|-----------|---------------|
 
 
