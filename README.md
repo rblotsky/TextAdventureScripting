@@ -104,7 +104,7 @@ Everything placed within `{` `}` is considered a command.
 +--------------+-----------+---------------+
 | Command Name | Variables | Functionality |
 +==============+===========+===============+
-| RANDOM       | Text Value\| Gets replaced with a random value from the variables. \|
+| RANDOM       | Text Value| Gets replaced with a random value from the variables. |
 |              | (can be given any amount of text values)|               |
 +--------------+-----------+---------------+
 
