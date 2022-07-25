@@ -18,9 +18,12 @@ namespace TAScript.Compiler
         public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)");
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
         public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(?:(?:\[)((?:.|[\r\n])*?)(?:\]))?((?:.|[\r\n])*)", RegexOptions.Multiline);
-        public static readonly Regex RETURN_REGEX = new Regex(@"\s*?(#\w*)?$", RegexOptions.Multiline);
-        public static readonly Regex COMMAND_REGEX = new Regex(@"{\w+:.*}");
+        public static readonly Regex RETURN_REGEX = new Regex(@"~\s*?(#\w*)?$", RegexOptions.Multiline);
+        public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):[\w\d><=+-,]*}");
         public static readonly Regex TAG_REGEX = new Regex(@"#\w+");
+
+        // Delegates
+        public delegate string CommandDelegate(ParsedBlock block, string[] commandVariables);
 
 
         // FUNCTIONS //
@@ -160,32 +163,94 @@ namespace TAScript.Compiler
             // Finishes the last ParsedBlock
             if (parsedBlocks.Count > 0)
             {
+                ParsedBlock lastBlock = parsedBlocks[parsedBlocks.Count - 1];
+
                 // Trims the current block text
                 currentBlockText = currentBlockText.Trim();
+
                 // Updates the default link type
-                Match continueMatch = RETURN_REGEX.Match(currentBlockText);
-                if (continueMatch.Success)
+                Match returnMatch = RETURN_REGEX.Match(currentBlockText);
+                if (returnMatch.Success)
                 {
-                    parsedBlocks[parsedBlocks.Count - 1].defaultLinkType = DefaultLinkType.Return;
-                    currentBlockText = currentBlockText.Replace(continueMatch.Value, "");
+                    lastBlock.defaultLinkType = DefaultLinkType.Return;
+                    currentBlockText = currentBlockText.Replace(returnMatch.Value, "");
                 }
 
                 // Sets the reroute if there is one
                 Match rerouteMatch = REROUTE_REGEX.Match(currentBlockText);
                 if (rerouteMatch.Success)
                 {
-                    parsedBlocks[parsedBlocks.Count - 1].rerouteSection = rerouteMatch.Groups[1].Value;
+                    lastBlock.rerouteSection = rerouteMatch.Groups[1].Value;
                     currentBlockText = currentBlockText.Replace(rerouteMatch.Value, "");
                 }
+
+                // Parses the commands in the text, replacing them with whatever their functions says to replace with.
+                // They are not replaced with anything if they could not be parsed.
+                currentBlockText = ParseCommandsInString(currentBlockText, lastBlock);
 
                 // Splits the text into the alwas, option, and title text
                 Match textSplitterMatch = TEXT_SPLITTER_REGEX.Match(currentBlockText);
                 string alwaysText = textSplitterMatch.Groups[1].Value;
                 string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
                 string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
-                parsedBlocks[parsedBlocks.Count - 1].text = new GameText(alwaysText, asOptionText, asTitleText);
+                lastBlock.text = new GameText(alwaysText, asOptionText, asTitleText);
             }
         }
+
+        public string ParseCommandsInString(string text, ParsedBlock block)
+        {
+            // Makes a new text to edit
+            string editedText = text;
+
+            // Extracts all commands
+            MatchCollection commandMatches = COMMAND_REGEX.Matches(editedText);
+
+            // Goes through all the matches, replaces them within the text and runs their commands
+            foreach(Match match in commandMatches)
+            {
+                // Gets command name and variables
+                string commandName = match.Groups[1].Value;
+                string[] commandVariables = new string[0];
+                if (match.Groups[2].Value != null)
+                {
+                    commandVariables = match.Groups[2].Value.Split(",");
+                }
+
+                // Finds the command by its name and then runs it with the appropriate variables.
+                string commandReplacementString = match.Value;
+                CommandDelegate commandToRun = GetCommandByName(commandName);
+                if(commandToRun != null)
+                {
+                    commandReplacementString = commandToRun(block, commandVariables);
+                }
+
+                editedText = editedText.Replace(match.Value, commandReplacementString);
+            }
+
+            // Returns the edited text
+            return editedText;
+        }
+
+
+        // Command Functions
+        public CommandDelegate GetCommandByName(string commandName)
+        {
+            if(commandName.Equals("TEST"))
+            {
+                return ParseTestCommand;
+            }
+
+            else
+            {
+                return null;
+            }
+        }
+
+        public string ParseTestCommand(ParsedBlock block, string[] variables)
+        {
+            return null;
+        }
+
 
         // Static
         public static int GetStringHashInt(string stringToHash)
