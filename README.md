@@ -100,17 +100,36 @@ Everything placed within `{` `}` is considered a command.
 - `Arguments`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. </b>
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
+## Variables
+Variables are stored within the game and used for Commands. Variable names are required to be text, excluding newlines, commas, and `{``}` or `[``]`<\b>
+characters. When a variable is first used, it is given a value of 0, and in subsequent uses the current value will be used.<\b>
+
+Some Commands allow modifying variable names, such as ADD or SET.
+
+Special Variables:
+Some variables are reserved by the game. For example, Section names are set as variables, as well as all Tags used in text.<\b>
+Section names are given a value equal to the number of times that section has been entered.
+Tags are given a value equal to the number of times that tag has appeared.
+
+Special variables can be modified by Commands, but it is important to remember that they are modified elsewhere outside of commands too.
+
 ## Valid Commands
 Argument Descriptions:
-- `Var`: Expects a variable name (can be any word without spaces)
-- `Text`: Expects text, all characters except newlines, commas, and `{``}` are accepted.
+- `Var`: Expects a variable name (variable names can be written similarly to Text arguments)
+- `Text`: Expects text, all characters except newlines, commas, and `{``}` or `[``]` are accepted.
 - `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
 - `ReqValue`: Expects an integer value.
 - `None`: Expects nothing.
 
+Commands with Multiple Argument Lists: <\b>
+A command can have multiple types of expected arguments. For example, RAND can have either no arguments, or a list of text values. This means <\b>
+that a different functionality will run depending on which arguments are used. If there are no arguments used, the functionality for no arguments is run. <\b>
+If a list of Text is used, then the functionality for that version will run instead.<\b>
+All other functions with multiple argument types & functionalities work similarly.
+
  Command Name | Arguments       | Functionality 
 --------------|-----------------|---------------
- RAND         | Text1,Text2...| Gets replaced with a random value from the variables.
+ RAND         | Text,Text...| Gets replaced with a random value from the variables.
  RAND         | None            | Randomly decides whether to display this option in the previous prompt. (Only works on options, not prompts)
  COND         | Var,Operator,ReqValue,Text | Displays Text if the expression specified is true.
  COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. (Only works on options, not prompts)
