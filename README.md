@@ -27,7 +27,8 @@ $ SECTION1 // This is a section header
 >> Option C[]Lets you go to the next prompt! ~ 
 
 - You reach a new prompt to deal with... What’ll you do?
->> [Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~
+>> {COND:Section2,=,0}[Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~ 
+   // This prompt is only displayed if Section 2 has not been visited, as specified by the Command at the beginning.
 >> [Sit and wait.]You sit and wait. That worked! Now you’re free! @END
 >> [Scream angrily.]You yell out into the void. Nothing happens. ~
 
