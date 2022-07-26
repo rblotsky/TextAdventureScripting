@@ -34,9 +34,9 @@ namespace TAScript.Runnable
         public void StartGame()
         {
             // Starts the game by setting the activeBlock to the initialBlock and resetting certain values
-            activeBlock = initialBlock;
             accessedBlocks = new List<Block>();
             displayedText = new List<string>();
+            StartNewBlock(initialBlock);
         }
 
         public void Continue()
@@ -51,25 +51,28 @@ namespace TAScript.Runnable
         public void StartNewBlock(Block newBlock)
         {
             // If the new block is the same as the active block, does nothing
-            if(activeBlock == newBlock)
+            if (activeBlock == newBlock)
             {
                 DebugLogger.DebugLog(string.Format("[Game] StartNewBlock found newBlock == activeBlock for blockID {0}. Make sure there are no unexitable loops!", "blockIDs have not been implemented!"), false);
                 return;
             }
 
             // Gets the section hash from the old and new block
-            int currentSectionHash = activeBlock.blockID.id[0];
-            int newSectionHash = activeBlock.blockID.id[0];
+            int currentSectionHash = (activeBlock == null ? 0 : activeBlock.blockID.id[0]);
+            int newSectionHash = (newBlock == null ? 0 : newBlock.blockID.id[0]);
 
             // If the new section is different from the old section, increments the variable for the new section
-            if(newSectionHash != currentSectionHash)
+            if (newSectionHash != currentSectionHash)
             {
                 AddToVariableByHash(newSectionHash, 1);
             }
 
             // Stores the last accessed block and its text
-            accessedBlocks.Add(activeBlock);
-            displayedText.Add(CurrentTitleText);
+            if (activeBlock != null)
+            {
+                accessedBlocks.Add(activeBlock);
+                displayedText.Add(CurrentTitleText);
+            }
 
             // Goes to the new block
             activeBlock = newBlock;
