@@ -12,6 +12,10 @@ namespace TAScript.Runnable
         // Initial state
         public Block initialBlock;
 
+        // Variables
+        public Dictionary<string, string> stringVariables;
+        public Dictionary<string, int> intVariables;
+
         // Cached Data
         private Block activeBlock;
         private List<Block> accessedBlocks;
