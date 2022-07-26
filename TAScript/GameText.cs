@@ -52,7 +52,7 @@ namespace TAScript
             string resolvedText = "";
             if (splitCompleteText.Length > 0)
             {
-                resolvedText += resolvedText[0];
+                resolvedText += splitCompleteText[0];
             }
 
             if(splitCompleteText.Length > 1 && asOption)
@@ -62,7 +62,7 @@ namespace TAScript
 
             if(splitCompleteText.Length > 2 && !asOption)
             {
-                resolvedText += resolvedText[2];
+                resolvedText += splitCompleteText[2];
             }
 
             // Returns the resolved text

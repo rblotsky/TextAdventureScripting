@@ -47,6 +47,8 @@ namespace TAScript
                     return currentVariableValue < reqVariableValue;
                 case Comparison.EqualTo:
                     return currentVariableValue == reqVariableValue;
+                case Comparison.NotEqualTo:
+                    return currentVariableValue != reqVariableValue;
                 case Comparison.GreaterThan:
                     return currentVariableValue > reqVariableValue;
                 default:

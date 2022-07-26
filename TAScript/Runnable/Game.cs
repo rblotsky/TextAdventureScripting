@@ -13,7 +13,7 @@ namespace TAScript.Runnable
         public Block initialBlock;
 
         // Variables
-        public Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<int, int> variables = new Dictionary<int, int>();
 
         // Cached Data
         private Block activeBlock;
@@ -57,6 +57,16 @@ namespace TAScript.Runnable
                 return;
             }
 
+            // Gets the section hash from the old and new block
+            int currentSectionHash = activeBlock.blockID.id[0];
+            int newSectionHash = activeBlock.blockID.id[0];
+
+            // If the new section is different from the old section, increments the variable for the new section
+            if(newSectionHash != currentSectionHash)
+            {
+                AddToVariableByHash(newSectionHash, 1);
+            }
+
             // Stores the last accessed block and its text
             accessedBlocks.Add(activeBlock);
             displayedText.Add(CurrentTitleText);
@@ -81,8 +91,44 @@ namespace TAScript.Runnable
         // Variables
         public int GetVariable(string varName)
         {
+            // Gets a hash of the variable name
+            int varNameHash = varName.GetHashCode();
+
+            // Gets it by its hash
+            return GetVariableByHash(varNameHash);
+        }
+
+        public int AddToVariable(string varName, int addAmount)
+        {   
+            // Gets a hash of the variable name
+            int varNameHash = varName.GetHashCode();
+
+            // Adds to the variable
+            return AddToVariableByHash(varNameHash, addAmount);
+        }
+
+        private int AddToVariableByHash(int varNameHash, int addAmount)
+        {
+            // If the variable exists, adds to it, returns the new value
+            if (variables.TryGetValue(varNameHash, out int value))
+            {
+                value += addAmount;
+                variables[varNameHash] = value;
+                return value;
+            }
+
+            // Otherwise, creates and adds to it, returns the value
+            else
+            {
+                variables.Add(varNameHash, addAmount);
+                return addAmount;
+            }
+        }
+
+        private int GetVariableByHash(int varNameHash)
+        {
             // If the variable exists, returns it
-            if(variables.TryGetValue(varName, out int value))
+            if (variables.TryGetValue(varNameHash, out int value))
             {
                 return value;
             }
@@ -90,26 +136,8 @@ namespace TAScript.Runnable
             // Otherwise, adds it and returns 0
             else
             {
-                variables.Add(varName, 0);
+                variables.Add(varNameHash, 0);
                 return 0;
-            }
-        }
-
-        public int AddToVariable(string varName, int addAmount)
-        {
-            // If the variable exists, adds to it, returns the new value
-            if(variables.TryGetValue(varName, out int value))
-            {
-                value += addAmount;
-                variables[varName] = value;
-                return value;
-            }
-
-            // Otherwise, creates and adds to it, returns the value
-            else
-            {
-                variables.Add(varName, addAmount);
-                return addAmount;
             }
         }
 

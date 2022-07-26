@@ -19,7 +19,7 @@ namespace TAScript.Compiler
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
         public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(?:(?:\[)((?:.|[\r\n])*?)(?:\]))?((?:.|[\r\n])*)", RegexOptions.Multiline);
         public static readonly Regex RETURN_REGEX = new Regex(@"~\s*?(#\w*)?$", RegexOptions.Multiline);
-        public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):[\w\d><=+-,]*}");
+        public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):((?:[^\n,{}\[\]]*,?)*)}");
         public static readonly Regex TAG_REGEX = new Regex(@"#\w+");
 
         // Delegates
@@ -253,6 +253,16 @@ namespace TAScript.Compiler
                 return ParseTestCommand;
             }
 
+            if(commandName.Equals("RAND"))
+            {
+                return ParseRandomCommand;
+            }
+
+            if(commandName.Equals("COND"))
+            {
+                return ParseConditionalCommand;
+            }
+
             else
             {
                 return null;
@@ -264,26 +274,68 @@ namespace TAScript.Compiler
             return null;
         }
 
-        public string ParseConditionalOptionCommand(ParsedBlock block, string[] variables)
+        public string ParseConditionalCommand(ParsedBlock block, string[] variables)
+        {
+            /*
+             * Possible Overloads:
+             * 1. Var,Operator,ReqValue      : Displays the option if the conditional evaluates to True
+             * 2. Var,Operator,ReqValue,Text : Creates a ConditionalText for the Text variable.
+             */
+
+            // If there are less than 3 variables, does nothing.
+            if(variables.Length < 3)
+            {
+                return null;
+            }
+
+            // Gets first 3 variables
+            string varName = variables[0];
+            string exOperator = variables[1];
+            string reqValue = variables[2];
+
+            // Attempts parsing operator and value
+            if(exOperator.Length != 1)
+            {
+                DebugLogger.DebugLog(string.Format("[Compiler.ParseConditionalCommand] Operator {0} has too many or too few chars!", exOperator), true);
+                return "PARSING_ERROR";
+            }
+
+            char operatorChar = exOperator[0];
+
+            if(int.TryParse(reqValue, out int reqValueInt))
+            {
+                // If parsing was successful, creates a VariableConditional for comparison.
+                VariableConditional conditionalComparison = new VariableConditional(varName, operatorChar, reqValueInt);
+
+                // If there is a 4th variable, gets it as a string and creates a ConditionalText for it.
+                if (variables.Length > 3)
+                {
+                    //TODO: Use a proper constructor for it
+                    ConditionalText conditionalText = new ConditionalText();
+
+                    // Returns a '{}' string to be filled in with string.Format()
+                    return "{}";
+                }
+
+                // If there is no 4th variable, adds this conditional to the block and returns null.
+                else
+                {
+                    block.blockConditionals.Add(conditionalComparison);
+                    return null;
+                }
+            }
+
+            else
+            {
+                DebugLogger.DebugLog(string.Format("[Compiler.ParseConditionalCOmmand] ReqValue {0} is not an integer!", reqValue), true);
+                return "PARSING_ERROR";
+            }
+        }
+
+        public string ParseRandomCommand(ParsedBlock block, string[] variables)
         {
             return null;
         }
-
-        public string ParseConditionalTextCommand(ParsedBlock block, string[] variables)
-        {
-            return null;
-        }
-
-        public string ParseRandomOptionCommand(ParsedBlock block, string[] variables)
-        {
-            return null;
-        }
-
-        public string ParseRandomTextCommand(ParsedBlock block, string[] variables)
-        {
-            return null;
-        }
-
 
         // Static
         public static int GetStringHashInt(string stringToHash)

@@ -13,9 +13,12 @@ namespace TAScript.Runnable
         public BlockID blockID;
         public GameText blockText;
 
-        // Links Links
+        // Links
         public Block defaultLink;
         public Block[] optionBlocks;
+
+        // Conditionals
+        public AbstractConditional[] blockConditionals;
 
 
         // CONSTRUCTORS //
@@ -27,8 +30,22 @@ namespace TAScript.Runnable
 
 
         // FUNCTIONS //
-        // Data Management
         // Interfacing Functions
+        public bool EvaluateConditionals(Game context)
+        {
+            // Iterates over all the conditionals, returning false if any are false.
+            foreach(AbstractConditional conditional in blockConditionals)
+            {
+                if(!conditional.RunConditional(context))
+                {
+                    return false;
+                }
+            }
+
+            // Returns true if all conditionals pass
+            return true;
+        }
+
         public virtual Block HandleTextInput(Game context, string input)
         {
             // Returns the same block by default: this function is only really needed for UserInputType.Text
@@ -46,14 +63,18 @@ namespace TAScript.Runnable
             // Returns a list of options if there are any
             if(optionBlocks != null)
             {
-                Option[] optionsList = new Option[optionBlocks.Length];
+                List<Option> optionsList = new List<Option>();
                 for (int i = 0; i < optionBlocks.Length; i++)
                 {
-                    optionsList[i] = new Option(optionBlocks[i].GetBlockText(context, true), optionBlocks[i]);
+                    // Only adds the option if it passes its conditionals
+                    if (optionBlocks[i].EvaluateConditionals(context))
+                    {
+                        optionsList.Add(new Option(optionBlocks[i].GetBlockText(context, true), optionBlocks[i]));
+                    }
                 }
 
-                // Returns the list of options
-                return optionsList;
+                // Returns the list of options.
+                return optionsList.ToArray();
             }
 
             // If no options, returns null

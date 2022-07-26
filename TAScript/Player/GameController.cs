@@ -18,6 +18,10 @@ namespace TAScript.Player
             // Starts the game
             runnableGame.StartGame();
 
+            // Asks for input to start
+            ColourConsole.WriteLine("Press ENTER to start!", Program.PROMPT_COLOUR);
+            Console.ReadLine();
+
             // While the game is active, displays its output and handles input
             while(runnableGame.IsGameActive)
             {

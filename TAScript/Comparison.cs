@@ -10,6 +10,7 @@ namespace TAScript
     {
         LessThan = '<',
         EqualTo = '=',
+        NotEqualTo = '!',
         GreaterThan = '>',
     }
 }

@@ -24,7 +24,7 @@ namespace TAScript.Compiler
         public string rerouteSection;
 
         // Conditionals
-        public AbstractConditional[] blockConditionals;
+        public List<AbstractConditional> blockConditionals = new List<AbstractConditional>();
 
 
         // CONSTRUCTORS //
@@ -89,6 +89,9 @@ namespace TAScript.Compiler
                     DebugLogger.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
                 }
             }
+
+            // Populates the block conditionals
+            runnable.blockConditionals = blockConditionals.ToArray();
 
         }
 
