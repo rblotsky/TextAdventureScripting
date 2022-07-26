@@ -27,7 +27,9 @@ $ SECTION1 // This is a section header
 >> Option C[]Lets you go to the next prompt! ~ 
 
 - You reach a new prompt to deal with... What’ll you do?
->> [Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~
+>> {COND:Section2,=,0}[Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~ 
+   // This prompt is only displayed if Section 2 has not been visited, as specified by the Command at the beginning.
+  
 >> [Sit and wait.]You sit and wait. That worked! Now you’re free! @END
 >> [Scream angrily.]You yell out into the void. Nothing happens. ~
 
@@ -45,7 +47,7 @@ There are 3 main building blocks:
     - Sections are named regions of script that can contain Prompts and Options.</b>
    You can use the `@` symbol to move the current execution point to the first prompt in that section. For example:</b>
  
-   `@SECTION2` will display the first prompt following `$ SECTION2` in the script.
+      `@SECTION2` will display the first prompt following `$ SECTION2` in the script.
 - Prompts  (Denoted by `-`)
     - Prompts are where the user is *prompted* for input. These are generally followed by 1 or more options.</b>
    Prompts are also very useful as "continue" points, were blocks ending with `~` will reroute to if there are no further options.</b>
@@ -74,7 +76,8 @@ Similarly, if a Return point is not used and there are no further prompts within
 - A Reroute (`@`) redirects execution to the first prompt within a named section. If the section doesn't exist, or there are no prompts in it, execution stops.
 - The `$ END` section is mandatory to be included at the end of your file. It allows rerouting to itself to complete the game.
 - The `@END` reroute moves execution to the aforemention `$ END` section, finishing the game. 
-* Note: If you are editing this program, that's a simplified explanation of how the `$ END` section works and why it is necessary.
+
+*Note: If you are editing this program, that's a simplified explanation of how the `$ END` section works and why it is necessary.*
 
 ## Multiline Blocks
 Blocks can be written across multiple lines, and doing so will include the line break as part of the text.
@@ -106,7 +109,8 @@ characters. When a variable is first used, it is given a value of 0, and in subs
 
 Some Commands allow modifying variable names, such as ADD or SET.
 
-Special Variables:
+#### Special Variables:
+
 Some variables are reserved by the game. For example, Section names are set as variables, as well as all Tags used in text.</b>
 Section names are given a value equal to the number of times that section has been entered.
 Tags are given a value equal to the number of times that tag has appeared.
@@ -121,7 +125,8 @@ Argument Descriptions:
 - `ReqValue`: Expects an integer value.
 - `None`: Expects nothing.
 
-Commands with Multiple Argument Lists: </b>
+#### Commands with Multiple Argument Lists: 
+</b>
 A command can have multiple types of expected arguments. For example, RAND can have either no arguments, or a list of text values. This means </b>
 that a different functionality will run depending on which arguments are used. If there are no arguments used, the functionality for no arguments is run. </b>
 If a list of Text is used, then the functionality for that version will run instead.</b>
