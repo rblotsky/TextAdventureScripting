@@ -45,7 +45,7 @@ There are 3 main building blocks:
     - Sections are named regions of script that can contain Prompts and Options.</b>
    You can use the `@` symbol to move the current execution point to the first prompt in that section. For example:</b>
  
-   `@SECTION2` will display the first prompt following `$ SECTION2` in the script.
+      `@SECTION2` will display the first prompt following `$ SECTION2` in the script.
 - Prompts  (Denoted by `-`)
     - Prompts are where the user is *prompted* for input. These are generally followed by 1 or more options.</b>
    Prompts are also very useful as "continue" points, were blocks ending with `~` will reroute to if there are no further options.</b>
