@@ -10,13 +10,21 @@ namespace TAScript.Compiler
     public class ParsedBlock
     {
         // DATA //
+        // ID
         public BlockID blockID;
+
+        // Text
         public GameText text;
+
+        // Links
         public DefaultLinkType defaultLinkType;
         public BlockID[] optionIDs;
         public BlockID defaultLinkID;
         public bool isOptionBlock;
         public string rerouteSection;
+
+        // Conditionals
+        public AbstractConditional[] blockConditionals;
 
 
         // CONSTRUCTORS //

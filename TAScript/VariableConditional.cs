@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TAScript.Runnable;
 
 namespace TAScript
 {
-    public class VariableConditional
+    public class VariableConditional : AbstractConditional
     {
         // DATA //
         public string variableName;
@@ -14,29 +15,43 @@ namespace TAScript
         public Comparison comparer;
 
         
-        // FUNCTIONS //
-        public bool RunComparison(Dictionary<string, int> variables)
+        // CONSTRUCTORS //
+        public VariableConditional(string varName, char comparisonChar, int reqValue)
         {
-            // Gets the current value of the variable
-            if(variables.TryGetValue(variableName, out int currentVariableValue))
+            // Tries setting the comparer according to the given character
+            try
             {
-                // Runs the comparison
-                switch(comparer)
-                {
-                    case Comparison.LessThan:
-                        return currentVariableValue < reqVariableValue;
-                    case Comparison.EqualTo:
-                        return currentVariableValue == reqVariableValue;
-                    case Comparison.GreaterThan:
-                        return currentVariableValue > reqVariableValue;
-                    default:
-                        return false;
-                }
+                comparer = (Comparison)comparisonChar;
+            }
+            catch(Exception e)
+            {
+                DebugLogger.DebugLog(string.Format("[VariableConditional.VariableConditional] Could not parse comparisonChar \'{0}\'! Error Message: \n{3}", comparisonChar, e.Message), false);
             }
 
-            // Return false if the variable doesn't exist (also logs an error)
-            DebugLogger.DebugLog(string.Format("The variable {0} doesn't exist!", variableName), false)
-            return false;
+            // Sets variable name and required value
+            variableName = varName;
+            reqVariableValue = reqValue;
+        }
+
+
+        // FUNCTIONS //
+        public override bool RunConditional(Game context)
+        {
+            // Gets the current value of the variable
+            int currentVariableValue = context.GetVariable(variableName);
+
+            // Runs the comparison
+            switch(comparer)
+            {
+                case Comparison.LessThan:
+                    return currentVariableValue < reqVariableValue;
+                case Comparison.EqualTo:
+                    return currentVariableValue == reqVariableValue;
+                case Comparison.GreaterThan:
+                    return currentVariableValue > reqVariableValue;
+                default:
+                    return false;
+            }
         }
     }
 }

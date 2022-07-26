@@ -88,41 +88,13 @@ namespace TAScript.Compiler
                     currentBlockText = "";
 
                     // Starts the new ParsedBlock
-                    // Creates a new ParsedBlock from data on this line
-                    bool isOption = (regexMatch.Groups[1].Value[0] == '>' ? true : false);
+                    currentBlockID = ParseNewBlock(parsedBlocks, regexMatch, currentBlockID, currentLine);
 
-                    // Gets indent amount and uses that to modify the current block ID.
-                    int indentAmountDifference = regexMatch.Groups[1].Length - currentBlockID.idLength + 1;
-                    int indexModSign = (indentAmountDifference < 0 ? -1 : 1);
-                    for (int i = 0; i < Math.Abs(indentAmountDifference); i++)
+                    // Stops compiling if a ZERO id was returned (means there was an error)
+                    if(currentBlockID == BlockID.ZERO)
                     {
-                        if (indexModSign < 0)
-                        {
-                            currentBlockID.RemoveLastIndex();
-                        }
-
-                        else
-                        {
-                            currentBlockID.AddIndex();
-                        }
-                    }
-
-                    // Adds to the last ID index only if we didn't change level
-                    if (indentAmountDifference <= 0)
-                    {
-                        currentBlockID.AddToLastIndex(1);
-                    }
-
-
-                    // If the indent amount difference is greater than 1, logs an error and stops.
-                    if (indentAmountDifference > 1)
-                    {
-                        DebugLogger.DebugLog(string.Format("[CompileGame] Indentation jump greater than 1 level on line {0}! Aborting.", currentLine), true);
                         return null;
                     }
-
-                    // Creates the new ParsedBlock, adds it to the parsed blocks list
-                    parsedBlocks.Add(new ParsedBlock(currentBlockID.CopyID(), DefaultLinkType.Continue, null, isOption, null));
 
                     // Gets the rest of the text and adds it to the current text
                     editedLine = WHITESPACE_UNTIL_CONTENT_REGEX.Replace(editedLine, "", 1);
@@ -156,6 +128,47 @@ namespace TAScript.Compiler
 
             // Returns the generated game
             return compiledGame;
+        }
+
+        public BlockID ParseNewBlock(List<ParsedBlock> parsedBlocks, Match blockMatch, BlockID currentID, int lineNumber)
+        {
+            // Creates a new ParsedBlock from data on this line
+            bool isOption = (blockMatch.Groups[1].Value[0] == '>' ? true : false);
+
+            // Gets indent amount and uses that to modify the current block ID.
+            int indentAmountDifference = blockMatch.Groups[1].Length - currentID.idLength + 1;
+            int indexModSign = (indentAmountDifference < 0 ? -1 : 1);
+            for (int i = 0; i < Math.Abs(indentAmountDifference); i++)
+            {
+                if (indexModSign < 0)
+                {
+                    currentID.RemoveLastIndex();
+                }
+
+                else
+                {
+                    currentID.AddIndex();
+                }
+            }
+
+            // Adds to the last ID index only if we didn't change level
+            if (indentAmountDifference <= 0)
+            {
+                currentID.AddToLastIndex(1);
+            }
+
+
+            // If the indent amount difference is greater than 1, logs an error and stops.
+            if (indentAmountDifference > 1)
+            {
+                DebugLogger.DebugLog(string.Format("[Compiler.ParseNewBlock] Indentation jump greater than 1 level on line {0}! Aborting.", lineNumber), true);
+                return BlockID.ZERO;
+            }
+
+            // Creates the new ParsedBlock, adds it to the parsed blocks list
+            parsedBlocks.Add(new ParsedBlock(currentID.CopyID(), DefaultLinkType.Continue, new GameText("EMPTY", "EMPTY", "EMPTY"), isOption, null));
+
+            return currentID;
         }
 
         public void FinishParsingBlock(List<ParsedBlock> parsedBlocks, string currentBlockText)
@@ -193,7 +206,7 @@ namespace TAScript.Compiler
                 string alwaysText = textSplitterMatch.Groups[1].Value;
                 string asOptionText = (textSplitterMatch.Groups.Count >= 3 ? textSplitterMatch.Groups[2].Value : "");
                 string asTitleText = (textSplitterMatch.Groups.Count >= 4 ? textSplitterMatch.Groups[3].Value : "");
-                lastBlock.text = new GameText(alwaysText, asOptionText, asTitleText);
+                lastBlock.text.UpdateText(alwaysText, asOptionText, asTitleText);
             }
         }
 
@@ -247,6 +260,26 @@ namespace TAScript.Compiler
         }
 
         public string ParseTestCommand(ParsedBlock block, string[] variables)
+        {
+            return null;
+        }
+
+        public string ParseConditionalOptionCommand(ParsedBlock block, string[] variables)
+        {
+            return null;
+        }
+
+        public string ParseConditionalTextCommand(ParsedBlock block, string[] variables)
+        {
+            return null;
+        }
+
+        public string ParseRandomOptionCommand(ParsedBlock block, string[] variables)
+        {
+            return null;
+        }
+
+        public string ParseRandomTextCommand(ParsedBlock block, string[] variables)
         {
             return null;
         }

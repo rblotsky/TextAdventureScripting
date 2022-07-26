@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace TAScript
 {
-    public enum Comparison
+    public abstract class AbstractConditional
     {
-        LessThan = '<',
-        EqualTo = '=',
-        GreaterThan = '>',
+        // FUNCTIONS //
+        public abstract bool RunConditional(Runnable.Game context);
     }
 }

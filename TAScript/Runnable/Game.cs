@@ -13,8 +13,7 @@ namespace TAScript.Runnable
         public Block initialBlock;
 
         // Variables
-        public Dictionary<string, string> stringVariables;
-        public Dictionary<string, int> intVariables;
+        public Dictionary<string, int> variables = new Dictionary<string, int>();
 
         // Cached Data
         private Block activeBlock;
@@ -79,6 +78,42 @@ namespace TAScript.Runnable
         }
 
         
+        // Variables
+        public int GetVariable(string varName)
+        {
+            // If the variable exists, returns it
+            if(variables.TryGetValue(varName, out int value))
+            {
+                return value;
+            }
+
+            // Otherwise, adds it and returns 0
+            else
+            {
+                variables.Add(varName, 0);
+                return 0;
+            }
+        }
+
+        public int AddToVariable(string varName, int addAmount)
+        {
+            // If the variable exists, adds to it, returns the new value
+            if(variables.TryGetValue(varName, out int value))
+            {
+                value += addAmount;
+                variables[varName] = value;
+                return value;
+            }
+
+            // Otherwise, creates and adds to it, returns the value
+            else
+            {
+                variables.Add(varName, addAmount);
+                return addAmount;
+            }
+        }
+
+
         // Debug
         public void LogBlockGraph()
         {
