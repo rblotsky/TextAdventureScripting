@@ -106,7 +106,7 @@ characters. When a variable is first used, it is given a value of 0, and in subs
 
 Some Commands allow modifying variable names, such as ADD or SET.
 
-Special Variables:
+#### Special Variables:
 
 Some variables are reserved by the game. For example, Section names are set as variables, as well as all Tags used in text.</b>
 Section names are given a value equal to the number of times that section has been entered.
@@ -122,7 +122,7 @@ Argument Descriptions:
 - `ReqValue`: Expects an integer value.
 - `None`: Expects nothing.
 
-Commands with Multiple Argument Lists: 
+#### Commands with Multiple Argument Lists: 
 </b>
 A command can have multiple types of expected arguments. For example, RAND can have either no arguments, or a list of text values. This means </b>
 that a different functionality will run depending on which arguments are used. If there are no arguments used, the functionality for no arguments is run. </b>
