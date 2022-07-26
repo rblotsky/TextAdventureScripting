@@ -92,21 +92,28 @@ Text can contain special `[` and `]` characters to split it into multiple parts:
 Commands are special expressions that can be placed ONLY within Block text, and can perform a number of things. For example, the "RANDOM" command </b>
 can be used to randomize what text is displayed somewhere.
 
-Commands have a simple syntax: `{COMMAND_NAME:Variable,Variable,...,Variable}` </b>
+Commands have a simple syntax: `{COMMAND_NAME:Argument,Argument,...,Argument}` </b>
 Everything placed within `{` `}` is considered a command.
 
 - `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names </b>
    later in this document.
-- `Variables`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. </b>
+- `Arguments`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. </b>
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
-## Valid Commands:
- Command Name | Variables       | Functionality 
+## Valid Commands
+Argument Descriptions:
+- `Var`: Expects a variable name (can be any word without spaces)
+- `Text`: Expects text, all characters except newlines, commas, and `{``}` are accepted.
+- `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
+- `ReqValue`: Expects an integer value.
+- `None`: Expects nothing.
+
+ Command Name | Arguments       | Functionality 
 --------------|-----------------|---------------
  RAND         | Text1,Text2...| Gets replaced with a random value from the variables.
  RAND         | None            | Randomly decides whether to display this option in the previous prompt. (Only works on options, not prompts)
- COND         | Variable,Operator(<,>,=,!),ReqValue,Text | Displays Text if the expression specified is true.
- COND         | Variable,Operator,ReqValue | Displays this option if the expression specified is true. (Only works on options, not prompts)
- 
+ COND         | Var,Operator,ReqValue,Text | Displays Text if the expression specified is true.
+ COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. (Only works on options, not prompts)
+
 
 
