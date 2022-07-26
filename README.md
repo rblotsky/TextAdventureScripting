@@ -93,7 +93,7 @@ Commands are special expressions that can be placed ONLY within Block text, and 
 can be used to randomize what text is displayed somewhere.
 
 Commands have a simple syntax: `{COMMAND_NAME:Argument,Argument,...,Argument}` </b>
-Everything placed within `{` `}` is considered a command.
+Everything placed within `{}` is considered a command.
 
 - `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names </b>
    later in this document.
@@ -101,7 +101,7 @@ Everything placed within `{` `}` is considered a command.
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
 ## Variables
-Variables are stored within the game and used for Commands. Variable names are required to be text, excluding newlines, commas, and `{``}` or `[``]`<\b>
+Variables are stored within the game and used for Commands. Variable names are required to be text, excluding newlines, commas, and `{}[]`<\b>
 characters. When a variable is first used, it is given a value of 0, and in subsequent uses the current value will be used.<\b>
 
 Some Commands allow modifying variable names, such as ADD or SET.
@@ -116,7 +116,7 @@ Special variables can be modified by Commands, but it is important to remember t
 ## Valid Commands
 Argument Descriptions:
 - `Var`: Expects a variable name (variable names can be written similarly to Text arguments)
-- `Text`: Expects text, all characters except newlines, commas, and `{``}` or `[``]` are accepted.
+- `Text`: Expects text, all characters except newlines, commas, and `{}[]` are accepted.
 - `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
 - `ReqValue`: Expects an integer value.
 - `None`: Expects nothing.
