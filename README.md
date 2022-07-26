@@ -103,7 +103,10 @@ Everything placed within `{` `}` is considered a command.
 ## Valid Commands:
  Command Name | Variables       | Functionality 
 --------------|-----------------|---------------
- RANDOM</b>   | Text Value</br> | Gets replaced with a random value from the variables.
-              | (can be given any amount of text values)|               
+ RAND         | Text1,Text2...| Gets replaced with a random value from the variables.
+ RAND         | None            | Randomly decides whether to display this option in the previous prompt. (Only works on options, not prompts)
+ COND         | Variable,Operator(<,>,=,!),ReqValue,Text | Displays Text if the expression specified is true.
+ COND         | Variable,Operator,ReqValue | Displays this option if the expression specified is true. (Only works on options, not prompts)
+ 
 
 
