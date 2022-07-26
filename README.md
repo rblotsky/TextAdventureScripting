@@ -74,7 +74,8 @@ Similarly, if a Return point is not used and there are no further prompts within
 - A Reroute (`@`) redirects execution to the first prompt within a named section. If the section doesn't exist, or there are no prompts in it, execution stops.
 - The `$ END` section is mandatory to be included at the end of your file. It allows rerouting to itself to complete the game.
 - The `@END` reroute moves execution to the aforemention `$ END` section, finishing the game. 
-* Note: If you are editing this program, that's a simplified explanation of how the `$ END` section works and why it is necessary.
+
+*Note: If you are editing this program, that's a simplified explanation of how the `$ END` section works and why it is necessary.*
 
 ## Multiline Blocks
 Blocks can be written across multiple lines, and doing so will include the line break as part of the text.
