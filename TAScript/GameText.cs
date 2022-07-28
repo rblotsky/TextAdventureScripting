@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TAScript.Runnable;
+using System.Text.RegularExpressions;
 
 namespace TAScript
 {
@@ -16,7 +17,10 @@ namespace TAScript
         private string asTitleText;
 
         // Conditionals within the text
-        public ConditionalText[] conditionals = new ConditionalText[0];
+        public List<ConditionalText> conditionals = new List<ConditionalText>();
+
+        // Regex
+        private static readonly Regex conditionalReplacementRegex = new Regex(@"{#}");
 
         // Tags
         public string[] textTags;
@@ -28,8 +32,6 @@ namespace TAScript
             alwaysText = always;
             asOptionText = asOption;
             asTitleText = asTitle;
-
-            conditionals = new ConditionalText[0];
         }
 
 
@@ -41,12 +43,50 @@ namespace TAScript
             asTitleText = asTitle;
         }
 
+        public void NumberEmptyFormatSpecifiers()
+        {
+            // Assembles the full text string
+            string combinedText = alwaysText + "|" + asOptionText + "|" + asTitleText;
+
+            // Replaces all "{#}" with "{i}" where i is the order of its appearance in the string.
+            bool hasMoreEmptyFormats = true;
+            int currentSpecifierIndex = 0;
+            while(hasMoreEmptyFormats)
+            {
+                // For each regex match, replaces it with the order of appearance index.
+                Match formatSpecMatch = conditionalReplacementRegex.Match(combinedText);
+                if(formatSpecMatch.Success)
+                {
+                    combinedText = conditionalReplacementRegex.Replace(combinedText, "{" + currentSpecifierIndex + "}", 1);
+                    currentSpecifierIndex++;
+                }
+
+                // If no match was found, finishes
+                else
+                {
+                    hasMoreEmptyFormats = false;
+                }
+            }
+
+            // Re-splits the text and changes the always, asOption, and asTitle text to the new versions.
+            string[] splitFilledText = combinedText.Split("|");
+            alwaysText = (splitFilledText.Length >= 1 ? splitFilledText[0] : "");
+            asOptionText = (splitFilledText.Length >= 2 ? splitFilledText[1] : "");
+            asTitleText = (splitFilledText.Length >= 3 ? splitFilledText[2] : "");
+        }
+
         public string ResolveText(Game context, bool asOption)
         {
-            // Resolves all conditionals into one string, then splits it up
-            string completeText = string.Format(alwaysText + "|" + asOptionText + "|" + asTitleText, conditionals);
-            string[] splitCompleteText = completeText.Split("|");
+            // Resolves all conditionals
+            string[] resolvedConditionals = new string[conditionals.Count];
+            for(int i = 0; i < conditionals.Count; i++)
+            {
+                resolvedConditionals[i] = conditionals[i].ResolveConditional(context);
+            }
 
+            // Insers them into the complete text, then splits it back up
+            string completeText = string.Format(alwaysText + "|" + asOptionText + "|" + asTitleText, resolvedConditionals);
+            string[] splitCompleteText = completeText.Split("|");
 
             // Generates the output text according to whether the always/option/title text was even set, then which one to display.
             string resolvedText = "";

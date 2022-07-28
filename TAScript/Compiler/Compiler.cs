@@ -248,17 +248,12 @@ namespace TAScript.Compiler
         // Command Functions
         public CommandDelegate GetCommandByName(string commandName)
         {
-            if(commandName.Equals("TEST"))
-            {
-                return ParseTestCommand;
-            }
-
             if(commandName.Equals("RAND"))
             {
                 return ParseRandomCommand;
             }
 
-            if(commandName.Equals("COND"))
+            else if(commandName.Equals("COND"))
             {
                 return ParseConditionalCommand;
             }
@@ -279,7 +274,7 @@ namespace TAScript.Compiler
             /*
              * Possible Overloads:
              * 1. Var,Operator,ReqValue      : Displays the option if the conditional evaluates to True
-             * 2. Var,Operator,ReqValue,Text : Creates a ConditionalText for the Text variable.
+             * 2. Var,Operator,ReqValue,SuccessText,FailText : Creates a ConditionalText for the Text variable.
              */
 
             // If there are less than 3 variables, does nothing.
@@ -310,11 +305,21 @@ namespace TAScript.Compiler
                 // If there is a 4th variable, gets it as a string and creates a ConditionalText for it.
                 if (variables.Length > 3)
                 {
-                    //TODO: Use a proper constructor for it
-                    ConditionalText conditionalText = new ConditionalText();
+                    string successText = variables[3];
+                    string failText = "";
 
-                    // Returns a '{}' string to be filled in with string.Format()
-                    return "{}";
+                    // If there is a 4th failure text variable, gets it too
+                    if(variables.Length > 4)
+                    {
+                        failText = variables[4];
+                    }
+
+                    // Creates the conditional text object, inserts it into the GameText for the current block
+                    ConditionalText conditionalText = new ConditionalText(successText, failText, conditionalComparison);
+                    block.text.conditionals.Add(conditionalText);
+
+                    // Returns a '{#}' string to be filled in with string.Format()
+                    return "{#}";
                 }
 
                 // If there is no 4th variable, adds this conditional to the block and returns null.

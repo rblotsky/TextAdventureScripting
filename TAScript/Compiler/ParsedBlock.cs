@@ -44,7 +44,8 @@ namespace TAScript.Compiler
         // Creating a Runnable version
         public Block ConvertToRunnable()
         {
-            // Creates the runnable version (Note: does not fill in options and default links yet!)
+            // Creates the runnable version
+            text.NumberEmptyFormatSpecifiers();
             return new Block(blockID, text);
         }
 
