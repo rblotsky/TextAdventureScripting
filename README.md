@@ -136,8 +136,8 @@ All other functions with multiple argument types & functionalities work similarl
 --------------|-----------------|---------------
  RAND         | Text,Text...| Gets replaced with a random value from the variables.
  RAND         | None            | Randomly decides whether to display this option in the previous prompt. (Only works on options, not prompts)
- COND         | Var,Operator,ReqValue,Text | Displays Text if the expression specified is true.
- COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. (Only works on options, not prompts)
+ COND         | Var,Operator,ReqValue,SuccessText,FailureText | Displays SuccessText if the expression specified is true, FailureText if not.
+ COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. *Note: If multiple COND commands are used, ALL of them must pass.*
 
 
 
