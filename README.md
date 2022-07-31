@@ -122,7 +122,7 @@ Argument Descriptions:
 - `Var`: Expects a variable name (variable names can be written similarly to Text arguments)
 - `Text`: Expects text, all characters except newlines, commas, and `{}[]` are accepted.
 - `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
-- `ReqValue`: Expects an integer value.
+- `Value`: Expects an integer value.
 - `None`: Expects nothing.
 
 #### Commands with Multiple Argument Lists: 
@@ -134,10 +134,13 @@ All other functions with multiple argument types & functionalities work similarl
 
  Command Name | Arguments       | Functionality 
 --------------|-----------------|---------------
- RAND         | Text,Text...| Gets replaced with a random value from the variables.
- RAND         | None            | Randomly decides whether to display this option in the previous prompt. (Only works on options, not prompts)
+ RAND         | Text,Text...| Gets replaced with a random value from the variables. *Note: Not implemented*
+ RAND         | None            | Randomly decides whether to display this option in the previous prompt. *Note: Not implemented*
  COND         | Var,Operator,ReqValue,SuccessText,FailureText | Displays SuccessText if the expression specified is true, FailureText if not.
  COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. *Note: If multiple COND commands are used, ALL of them must pass.*
-
+ SET          | Var,Value       | Sets variable Var to value Value.
+ ADD          | Var,Value       | Adds value Value to variable Var. 
+ MIN          | Var,Value       | Sets the variable Var to the lower value of the 2: itself, and Value. *Note: Not implemented*
+ MAX          | Var,Value       | Sets the variable Var to the higher value of the 2: itself, and Value. *Note: Not implemented*
 
 
