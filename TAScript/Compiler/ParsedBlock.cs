@@ -23,8 +23,9 @@ namespace TAScript.Compiler
         public bool isOptionBlock;
         public string rerouteSection;
 
-        // Conditionals
+        // Command Data
         public List<AbstractConditional> blockConditionals = new List<AbstractConditional>();
+        public List<VariableModifier> variableModifiers = new List<VariableModifier>();
 
 
         // CONSTRUCTORS //
@@ -91,8 +92,9 @@ namespace TAScript.Compiler
                 }
             }
 
-            // Populates the block conditionals
+            // Populates the block conditionals & var modifiers
             runnable.blockConditionals = blockConditionals.ToArray();
+            runnable.variableModifiers = variableModifiers.ToArray();
 
         }
 

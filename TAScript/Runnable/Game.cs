@@ -76,6 +76,12 @@ namespace TAScript.Runnable
 
             // Goes to the new block
             activeBlock = newBlock;
+
+            // Runs the new block's variable modifiers, it if has any.
+            if(newBlock != null)
+            {
+                newBlock.RunVariableModifiers(this);
+            }
         }
 
         public void HandleTextInput(string userInput)
@@ -92,6 +98,16 @@ namespace TAScript.Runnable
 
         
         // Variables
+        public void SetVariable(string varName, int amount)
+        {
+            // Gets a hash of the variable name
+            int varNameHash = varName.GetHashCode();
+
+            // Sets it by its hash
+            SetVariableByHash(varNameHash, amount);
+        }
+
+
         public int GetVariable(string varName)
         {
             // Gets a hash of the variable name
@@ -108,6 +124,21 @@ namespace TAScript.Runnable
 
             // Adds to the variable
             return AddToVariableByHash(varNameHash, addAmount);
+        }
+
+        private void SetVariableByHash(int varNameHash, int newVal)
+        {
+            // If it exists, sets the variable to the new value
+            if(variables.ContainsKey(varNameHash))
+            {
+                variables[varNameHash] = newVal;
+            }
+
+            // Otherwise, creates a new variable w/ this value
+            else
+            {
+                variables.Add(varNameHash, newVal);
+            }
         }
 
         private int AddToVariableByHash(int varNameHash, int addAmount)

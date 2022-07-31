@@ -20,6 +20,9 @@ namespace TAScript.Runnable
         // Conditionals
         public AbstractConditional[] blockConditionals;
 
+        // Var Modifiers
+        public VariableModifier[] variableModifiers;
+
 
         // CONSTRUCTORS //
         public Block(BlockID id, GameText text)
@@ -31,21 +34,6 @@ namespace TAScript.Runnable
 
         // FUNCTIONS //
         // Interfacing Functions
-        public bool EvaluateConditionals(Game context)
-        {
-            // Iterates over all the conditionals, returning false if any are false.
-            foreach(AbstractConditional conditional in blockConditionals)
-            {
-                if(!conditional.RunConditional(context))
-                {
-                    return false;
-                }
-            }
-
-            // Returns true if all conditionals pass
-            return true;
-        }
-
         public virtual Block HandleTextInput(Game context, string input)
         {
             // Returns the same block by default: this function is only really needed for UserInputType.Text
@@ -100,6 +88,31 @@ namespace TAScript.Runnable
         public Block RunDefaultLink(Game context)
         {
             return defaultLink;
+        }
+
+
+        // Command functions
+        public void RunVariableModifiers(Game context)
+        {
+            foreach (VariableModifier modifier in variableModifiers)
+            {
+                modifier.RunModifier(context);
+            }
+        }
+
+        public bool EvaluateConditionals(Game context)
+        {
+            // Iterates over all the conditionals, returning false if any are false.
+            foreach (AbstractConditional conditional in blockConditionals)
+            {
+                if (!conditional.RunConditional(context))
+                {
+                    return false;
+                }
+            }
+
+            // Returns true if all conditionals pass
+            return true;
         }
     }
 }

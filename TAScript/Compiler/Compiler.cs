@@ -258,15 +258,20 @@ namespace TAScript.Compiler
                 return ParseConditionalCommand;
             }
 
+            else if(commandName.Equals("ADD"))
+            {
+                return ParseAddCommand;
+            }
+
+            else if(commandName.Equals("SET"))
+            {
+                return ParseSetCommand;
+            }
+
             else
             {
                 return null;
             }
-        }
-
-        public string ParseTestCommand(ParsedBlock block, string[] variables)
-        {
-            return null;
         }
 
         public string ParseConditionalCommand(ParsedBlock block, string[] variables)
@@ -332,7 +337,7 @@ namespace TAScript.Compiler
 
             else
             {
-                DebugLogger.DebugLog(string.Format("[Compiler.ParseConditionalCOmmand] ReqValue {0} is not an integer!", reqValue), true);
+                DebugLogger.DebugLog(string.Format("[Compiler.ParseConditionalCommand] ReqValue {0} is not an integer!", reqValue), true);
                 return "PARSING_ERROR";
             }
         }
@@ -340,6 +345,54 @@ namespace TAScript.Compiler
         public string ParseRandomCommand(ParsedBlock block, string[] variables)
         {
             return null;
+        }
+
+        public string ParseAddCommand(ParsedBlock block, string[] variables)
+        {
+            // Sends to the VariableModifierCommandParser
+            return VariableModifierCommandParser(block, variables, true);
+        }
+
+        public string ParseSetCommand(ParsedBlock block, string[] variables)
+        {
+            // Sends to the VariableModifierCommandParser
+            return VariableModifierCommandParser(block, variables, false);
+        }
+
+        public string VariableModifierCommandParser(ParsedBlock block, string[] variables, bool isAdd)
+        {
+            /*
+             * Possible Overloads:
+             * 1. Var,Value
+             */
+
+            // Ensures there are enough variables
+            if (variables.Length == 2)
+            {
+                // Tries getting the variables as the required datatypes
+                string varName = variables[0];
+
+                if (int.TryParse(variables[1], out int addValue))
+                {
+                    // Adds the new Variable Modifier object and returns null.
+                    block.variableModifiers.Add(new VariableModifier(varName, addValue, isAdd));
+                    return null;
+                }
+
+                else
+                {
+                    DebugLogger.DebugLog($"[Compiler.VariableModifierCommandParser] Could not parse value {variables[1]} as an integer!", true);
+                }
+            }
+
+            // If not, prints an error message
+            else
+            {
+                DebugLogger.DebugLog($"[Compiler.VariableModifierCommandParser] Invalid amount of variables! Required: 2, Given: {variables.Length}!", true);
+            }
+
+            // Returns "PARSING_ERROR" by default.
+            return "PARSING_ERROR";
         }
 
         // Static
