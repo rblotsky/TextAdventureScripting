@@ -105,8 +105,8 @@ namespace TAScript
                 resolvedText += splitCompleteText[2];
             }
 
-            // Returns the resolved text
-            return resolvedText;
+            // Returns the resolved text, trimmed at the start.
+            return resolvedText.TrimStart();
         }
     }
 }

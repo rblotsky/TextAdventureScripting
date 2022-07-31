@@ -193,6 +193,13 @@ namespace TAScript.Compiler
             // Goes down one index, then forward in IDs until it finds one that is a prompt. If it reaches null, it drops the last index and continues.
             BlockID checkID = new BlockID(blockID.id);
             checkID.RemoveLastIndex();
+
+            // Returns a ZERO id if this is the min length
+            if(checkID.idLength == BlockID.MIN_ID_LEN)
+            { 
+                return BlockID.ZERO;
+            }
+
             checkID.AddToLastIndex(1);
             ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
 
