@@ -19,7 +19,7 @@ namespace TAScript.Compiler
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
         public static readonly Regex TEXT_SPLITTER_REGEX = new Regex(@"([^\[\]]*)(?:(?:\[)((?:.|[\r\n])*?)(?:\]))?((?:.|[\r\n])*)", RegexOptions.Multiline);
         public static readonly Regex RETURN_REGEX = new Regex(@"~\s*?(#\w*)?$", RegexOptions.Multiline);
-        public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):((?:[^\n,{}\[\]]*,?)*)}");
+        public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):((?:[^\n|{}\[\]]*\\?)*)}");
         public static readonly Regex TAG_REGEX = new Regex(@"#\w+");
 
         // Delegates
@@ -29,8 +29,11 @@ namespace TAScript.Compiler
         // FUNCTIONS //
         public Runnable.Game CompileGame(string sourceText)
         {
+            // Removes all carriage returns from source text
+            string editedSourceText = sourceText.Replace("\r","");
+
             // Split sourceText into an array of lines
-            string[] lines = sourceText.Split("\n");
+            string[] lines = editedSourceText.Split("\n");
 
             // Caches some important data
             int currentLine = 0;
@@ -226,11 +229,11 @@ namespace TAScript.Compiler
                 string[] commandVariables = new string[0];
                 if (match.Groups[2].Value != null)
                 {
-                    commandVariables = match.Groups[2].Value.Split(",");
+                    commandVariables = match.Groups[2].Value.Split("\\");
                 }
 
                 // Finds the command by its name and then runs it with the appropriate variables.
-                string commandReplacementString = match.Value;
+                string commandReplacementString = "INVALID_COMMAND";
                 CommandDelegate commandToRun = GetCommandByName(commandName);
                 if(commandToRun != null)
                 {
@@ -266,6 +269,11 @@ namespace TAScript.Compiler
             else if(commandName.Equals("SET"))
             {
                 return ParseSetCommand;
+            }
+
+            else if(commandName.Equals("NOEMPTY"))
+            {
+                return ParseNoEmptyCommand;
             }
 
             else
@@ -393,6 +401,16 @@ namespace TAScript.Compiler
 
             // Returns "PARSING_ERROR" by default.
             return "PARSING_ERROR";
+        }
+
+        public string ParseNoEmptyCommand(ParsedBlock block, string[] variables)
+        {
+            // No variables needed for this command
+            // Sets the block text to have no empty lines.
+            block.text.noEmptyLines = true;
+
+            // Returns null to signify successful compilation
+            return null;
         }
 
         // Static

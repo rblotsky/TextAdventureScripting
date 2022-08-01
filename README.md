@@ -95,8 +95,9 @@ Text can contain special `[` and `]` characters to split it into multiple parts:
 Commands are special expressions that can be placed ONLY within Block text, and can perform a number of things. For example, the "RANDOM" command </b>
 can be used to randomize what text is displayed somewhere.
 
-Commands have a simple syntax: `{COMMAND_NAME:Argument,Argument,...,Argument}` </b>
-Everything placed within `{}` is considered a command.
+Commands have a simple syntax: `{COMMAND_NAME:Argument\Argument\...\Argument}` </b>
+Everything placed within `{}` is considered a command.</b>
+Arguments are separated with a backslash `\` character.
 
 - `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names </b>
    later in this document.
@@ -104,7 +105,7 @@ Everything placed within `{}` is considered a command.
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
 ## Variables
-Variables are stored within the game and used for Commands. Variable names are required to be text, excluding newlines, commas, and `{}[]`</b>
+Variables are stored within the game and used for Commands. Variable names are required to be text, excluding newlines, backslashes, and `{}[]`</b>
 characters. When a variable is first used, it is given a value of 0, and in subsequent uses the current value will be used.</b>
 
 Some Commands allow modifying variable names, such as ADD or SET.
@@ -120,7 +121,7 @@ Special variables can be modified by Commands, but it is important to remember t
 ## Valid Commands
 Argument Descriptions:
 - `Var`: Expects a variable name (variable names can be written similarly to Text arguments)
-- `Text`: Expects text, all characters except newlines, commas, and `{}[]` are accepted.
+- `Text`: Expects text, all characters except newlines, backslashes, and `{}[]` are accepted.
 - `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
 - `Value`: Expects an integer value.
 - `None`: Expects nothing.
@@ -134,13 +135,13 @@ All other functions with multiple argument types & functionalities work similarl
 
  Command Name | Arguments       | Functionality 
 --------------|-----------------|---------------
- RAND         | Text,Text...| Gets replaced with a random value from the variables. *Note: Not implemented*
+ RAND         | Text\Text...| Gets replaced with a random value from the variables. *Note: Not implemented*
  RAND         | None            | Randomly decides whether to display this option in the previous prompt. *Note: Not implemented*
- COND         | Var,Operator,ReqValue,SuccessText,FailureText | Displays SuccessText if the expression specified is true, FailureText if not.
- COND         | Var,Operator,ReqValue | Displays this option if the expression specified is true. *Note: If multiple COND commands are used, ALL of them must pass.*
- SET          | Var,Value       | Sets variable Var to value Value.
- ADD          | Var,Value       | Adds value Value to variable Var. 
- MIN          | Var,Value       | Sets the variable Var to the lower value of the 2: itself, and Value. *Note: Not implemented*
- MAX          | Var,Value       | Sets the variable Var to the higher value of the 2: itself, and Value. *Note: Not implemented*
-
+ COND         | Var\Operator\ReqValue\SuccessText\FailureText | Displays SuccessText if the expression specified is true, FailureText if not.
+ COND         | Var\Operator\ReqValue | Displays this option if the expression specified is true. *Note: If multiple COND commands are used, ALL of them must pass.*
+ SET          | Var\Value       | Sets variable Var to value Value.
+ ADD          | Var\Value       | Adds value Value to variable Var. 
+ MIN          | Var\Value       | Sets the variable Var to the lower value of the 2: itself, and Value. *Note: Not implemented*
+ MAX          | Var\Value       | Sets the variable Var to the higher value of the 2: itself, and Value. *Note: Not implemented*
+ NOEMPTY      | None            | Removes all empty lines from the text in this block.
 

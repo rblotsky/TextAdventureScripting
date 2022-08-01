@@ -10,7 +10,8 @@ namespace TAScript.Player
     public class GameController
     {
         // CONSTANTS //
-        public static readonly int MAX_PREV_TEXT_DISPLAYED = 1;
+        public static readonly int MAX_PREV_TEXT_DISPLAYED = 4;
+
 
         // FUNCTIONS //
         public void PlayGame(Game runnableGame)
@@ -34,7 +35,7 @@ namespace TAScript.Player
                     if (runnableGame.PreviouslyDisplayedText.Length - i <= MAX_PREV_TEXT_DISPLAYED)
                     {
                         ColourConsole.WriteLine(runnableGame.PreviouslyDisplayedText[i], ConsoleColor.Gray);
-                        ColourConsole.WriteLine("---------------------------", ConsoleColor.DarkGray);
+                        ColourConsole.WriteLine("", ConsoleColor.DarkGray);
                     }
                 }
 

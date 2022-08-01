@@ -21,9 +21,13 @@ namespace TAScript
 
         // Regex
         private static readonly Regex conditionalReplacementRegex = new Regex(@"{#}");
+        private static readonly Regex emptyLineRegex = new Regex(@"\n{2,}");
 
         // Tags
         public string[] textTags;
+
+        // Flags
+        public bool noEmptyLines = false;
 
 
         // CONSTRUCTORS //
@@ -105,8 +109,14 @@ namespace TAScript
                 resolvedText += splitCompleteText[2];
             }
 
-            // Returns the resolved text, trimmed at the start.
-            return resolvedText.TrimStart();
+            // Applies different flags
+            if(noEmptyLines)
+            {
+                resolvedText = emptyLineRegex.Replace(resolvedText, "\n");
+            }
+
+            // Returns the resolved text, trimmed at the start and end.
+            return resolvedText.Trim();
         }
     }
 }
