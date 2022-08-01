@@ -99,8 +99,7 @@ Commands have a simple syntax: `{COMMAND_NAME:Argument\Argument\...\Argument}` <
 Everything placed within `{}` is considered a command.</b>
 Arguments are separated with a backslash `\` character.
 
-- `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names </b>
-   later in this document.
+- `COMMAND_NAME:` The name of the command to run. The colon `:` after COMMAND_NAME is mandatory, even if there are no arguments for the command.
 - `Arguments`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. </b>
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
