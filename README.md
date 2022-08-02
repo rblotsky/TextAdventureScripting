@@ -57,7 +57,7 @@ There are 3 main building blocks:
    By default, selecting an option will continue to the next prompt (`-`) on a lower indent level, unless it contains a reroute (`@`) or 
    a return (`~`).
    
-##### One-Time Prompts
+##### One-Time Options
 Options can have a `?` character placed at the front of the option (eg. `>>>> ? Text Here`) to make them only usable once. This means that regardless of how
 many times the previous prompt is run, this option will only appear *before* it is selected, and after it is selected it will not longer be available.
 
