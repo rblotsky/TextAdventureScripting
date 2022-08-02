@@ -21,6 +21,7 @@ namespace TAScript.Compiler
         public static readonly Regex RETURN_REGEX = new Regex(@"~\s*?(#\w*)?$", RegexOptions.Multiline);
         public static readonly Regex COMMAND_REGEX = new Regex(@"{(\w+):((?:[^\n|{}\[\]]*\\?)*)}");
         public static readonly Regex TAG_REGEX = new Regex(@"#\w+");
+        public static readonly Regex ONE_TIME_REGEX = new Regex(@"(?!^\s*)\?");
 
         // Delegates
         public delegate string CommandDelegate(ParsedBlock block, string[] commandVariables);
@@ -198,6 +199,21 @@ namespace TAScript.Compiler
                 {
                     lastBlock.rerouteSection = rerouteMatch.Groups[1].Value;
                     currentBlockText = currentBlockText.Replace(rerouteMatch.Value, "");
+                }
+
+                // If the text contains a single-appearance symbol, adds a conditional so it only appears once
+                Match oneTimeMatch = ONE_TIME_REGEX.Match(currentBlockText);
+                if(oneTimeMatch.Success)
+                {
+                    // Replaces the symbol
+                    currentBlockText = ONE_TIME_REGEX.Replace(currentBlockText, "", 1);
+
+                    // Adds a conditional and a variable modifier, so it only runs if it hasnt run yet and if it does run, it adds to its variable to store that it has run.
+                    VariableConditional oneTimeConditional = new VariableConditional(lastBlock.blockID.ToString(), '=', 0);
+                    lastBlock.blockConditionals.Add(oneTimeConditional);
+
+                    VariableModifier modifier = new VariableModifier(lastBlock.blockID.ToString(), 1, true);
+                    lastBlock.variableModifiers.Add(modifier);
                 }
 
                 // Parses the commands in the text, replacing them with whatever their functions says to replace with.
