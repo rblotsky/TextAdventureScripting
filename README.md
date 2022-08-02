@@ -27,7 +27,7 @@ $ SECTION1 // This is a section header
 >> Option C[]Lets you go to the next prompt! ~ 
 
 - You reach a new prompt to deal with... What’ll you do?
->> {COND:Section2,=,0}[Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~ 
+>> {COND:Section2\=\0}[Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~ 
    // This prompt is only displayed if Section 2 has not been visited, as specified by the Command at the beginning.
   
 >> [Sit and wait.]You sit and wait. That worked! Now you’re free! @END
@@ -103,9 +103,8 @@ Commands have a simple syntax: `{COMMAND_NAME:Argument\Argument\...\Argument}`
 Everything placed within `{}` is considered a command.
 Arguments are separated with a backslash `\` character.
 
-- `COMMAND_NAME` The name of the command to run. Different commands do different things. There is a list of valid command names 
-   later in this document.
-- `Arguments`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them. 
+- `COMMAND_NAME:` The name of the command to run. The colon `:` after COMMAND_NAME is mandatory, even if there are no arguments for the command.
+- `Arguments`    Variables are the input given to the command. Each command might expect different variables, and a different amount of them.
    Adding too few, too many, or invalid variables will be considered a syntax error and will prevent parsing the command.
    
 ## Variables
