@@ -8,7 +8,7 @@ TAScript is a simple scripting language that allows creating choose-your-own-sto
 
 An example adventure might be as follows:
 
-```cs
+```
 // Comment
 
 $ SECTION1 // This is a section header
