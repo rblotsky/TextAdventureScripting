@@ -8,7 +8,7 @@ TAScript is a simple scripting language that allows creating choose-your-own-sto
 
 An example adventure might be as follows:
 
-```
+```cs
 // Comment
 
 $ SECTION1 // This is a section header
@@ -21,10 +21,11 @@ $ SECTION1 // This is a section header
 
 -- How do you get out of the second branch of the options tree?
 >>> Huh??[], you ask in confusion. Nothing changes. ~
+>>> [Back to first prompt.] You go back to the first prompt! ~~ // This goes back to the first prompt because it uses two ~ symbols.
 >>> [Climb down]You climb down the tree. There’s something at the bottom!
 
 >> Option B[]Goes to section 2! @SECTION2
->> Option C[]Lets you go to the next prompt! ~ 
+>> Option C[]Lets you go to the next prompt! ~ // This goes back to "You enter Section1"
 
 - You reach a new prompt to deal with... What’ll you do?
 >> {COND:Section2\=\0}[Win the game!]You try to ‘win the game’, but you do not win the game. Do you even know how? ~ 
@@ -73,6 +74,9 @@ Any Options ***must*** be 1 indent level ***higher*** than the previous block.
 ## Return and Continue
 By default, a block will *continue* to the next prompt on a lower indent level, within the same section. However, by placing a Return point (`~`) at the end of the block
 the execution will instead return to the previous prompt. This does *nothing* if there is no previous prompt.
+By adding more `~` characters, you can increase how far back the Return goes. For example:
+ - `~` goes back to this option's prompt.
+ - `~~` goes to the prompt that the last prompt was an option for.
 
 Similarly, if a Return point is not used and there are no further prompts within the same section, execution will end.
 

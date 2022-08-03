@@ -22,6 +22,7 @@ namespace TAScript.Compiler
         public BlockID defaultLinkID;
         public bool isOptionBlock;
         public string rerouteSection;
+        public int returnLevelsDown = 0;
 
         // Command Data
         public List<AbstractConditional> blockConditionals = new List<AbstractConditional>();
@@ -71,7 +72,7 @@ namespace TAScript.Compiler
                     // Logs an error if it doesn't
                     else
                     {
-                        DebugLogger.DebugLog(string.Format("[PopulateRunnableVersion] Could not find Block ID {0}, but it is referenced in Block ID {1}!", optionIDs[i], blockID), true);
+                        DebugLogger.DebugLog(string.Format("[ParsedBlock.PopulateRunnableVersion] Could not find Block ID {0}, but it is referenced in Block ID {1}!", optionIDs[i], blockID), true);
                     }
                 }
 
@@ -88,7 +89,7 @@ namespace TAScript.Compiler
                 // Logs an error if nothing was found, but the reroute isn't END
                 if(defaultLinkBlock == null)
                 {
-                    DebugLogger.DebugLog(string.Format("[PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
+                    DebugLogger.DebugLog(string.Format("[ParsedBlock.PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
                 }
             }
 
@@ -175,7 +176,20 @@ namespace TAScript.Compiler
         {
             // Goes to the last ID on the previous level (this option's prompt)
             BlockID checkID = new BlockID(blockID.id);
-            checkID.RemoveLastIndex();
+
+            // Prints an error if the returnLevelsDown is too high
+            if(blockID.idLength - returnLevelsDown <= BlockID.MIN_ID_LEN)
+            {
+                DebugLogger.DebugLog($"[ParsedBlock.GetReturnLink] Too many '~' characters used, cannot return that far down! Used: {returnLevelsDown}, BlockID Length: {blockID.idLength}!", true);
+                return BlockID.ZERO;
+            }
+
+            // Removes the last index equal to the number of levels to go down.
+            for (int i = 0; i < returnLevelsDown; i++)
+            {
+                checkID.RemoveLastIndex();
+            }
+
             ParsedBlock checkBlock = allBlocks.Find(x => x.blockID.Equals(checkID));
             
             // If there is no block below this or it finds itself, returns ZERO.
