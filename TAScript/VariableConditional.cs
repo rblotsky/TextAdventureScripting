@@ -16,16 +16,40 @@ namespace TAScript
 
         
         // CONSTRUCTORS //
-        public VariableConditional(string varName, char comparisonChar, int reqValue)
+        public VariableConditional(string varName, string comparisonString, int reqValue)
         {
             // Tries setting the comparer according to the given character
             try
             {
-                comparer = (Comparison)comparisonChar;
+                if(comparisonString.Equals("="))
+                {
+                    comparer = Comparison.EqualTo;
+                }
+                else if (comparisonString.Equals("!"))
+                {
+                    comparer = Comparison.NotEqualTo;
+                }
+                else if (comparisonString.Equals(">"))
+                {
+                    comparer = Comparison.GreaterThan;
+                }
+                else if (comparisonString.Equals("<"))
+                {
+                    comparer = Comparison.LessThan;
+                }
+                else if (comparisonString.Equals(">="))
+                {
+                    comparer = Comparison.GreaterOrEqual;
+                }
+                else if (comparisonString.Equals("<="))
+                {
+                    comparer = Comparison.LessOrEqual;
+                }
             }
+
             catch(Exception e)
             {
-                DebugLogger.DebugLog(string.Format("[VariableConditional.VariableConditional] Could not parse comparisonChar \'{0}\'! Error Message: \n{3}", comparisonChar, e.Message), false);
+                DebugLogger.DebugLog(string.Format("[VariableConditional.Constructor] Could not parse comparisonChar \'{0}\'! Error Message: \n{3}", comparisonString, e.Message), false);
             }
 
             // Sets variable name and required value
@@ -51,6 +75,10 @@ namespace TAScript
                     return currentVariableValue != reqVariableValue;
                 case Comparison.GreaterThan:
                     return currentVariableValue > reqVariableValue;
+                case Comparison.GreaterOrEqual:
+                    return currentVariableValue >= reqVariableValue;
+                case Comparison.LessOrEqual:
+                    return currentVariableValue <= reqVariableValue;
                 default:
                     return false;
             }

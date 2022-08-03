@@ -129,7 +129,7 @@ Special variables can be modified by Commands, but it is important to remember t
 Argument Descriptions:
 - `Var`: Expects a variable name (variable names can be written similarly to Text arguments)
 - `Text`: Expects text, all characters except newlines, backslashes, and `{}[]` are accepted.
-- `Operator`: Expects an operator (>, <, =, !) that defines what operation to use for the expression.
+- `Operator`: Expects an operator (>, <, =, !, >=, <=) that defines what operation to use for the expression.
 - `Value`: Expects an integer value.
 - `None`: Expects nothing.
 

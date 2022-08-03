@@ -8,9 +8,11 @@ namespace TAScript
 {
     public enum Comparison
     {
-        LessThan = '<',
-        EqualTo = '=',
-        NotEqualTo = '!',
-        GreaterThan = '>',
+        LessThan,
+        EqualTo,
+        NotEqualTo,
+        GreaterThan,
+        GreaterOrEqual,
+        LessOrEqual,
     }
 }

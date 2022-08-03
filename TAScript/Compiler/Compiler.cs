@@ -210,7 +210,7 @@ namespace TAScript.Compiler
                     currentBlockText = ONE_TIME_REGEX.Replace(currentBlockText, "", 1);
 
                     // Adds a conditional and a variable modifier, so it only runs if it hasnt run yet and if it does run, it adds to its variable to store that it has run.
-                    VariableConditional oneTimeConditional = new VariableConditional(lastBlock.blockID.ToString(), '=', 0);
+                    VariableConditional oneTimeConditional = new VariableConditional(lastBlock.blockID.ToString(), "=", 0);
                     lastBlock.blockConditionals.Add(oneTimeConditional);
 
                     VariableModifier modifier = new VariableModifier(lastBlock.blockID.ToString(), 1, true);
@@ -315,22 +315,14 @@ namespace TAScript.Compiler
 
             // Gets first 3 variables
             string varName = variables[0];
-            string exOperator = variables[1];
+            string condOperator = variables[1];
             string reqValue = variables[2];
 
-            // Attempts parsing operator and value
-            if(exOperator.Length != 1)
-            {
-                DebugLogger.DebugLog(string.Format("[Compiler.ParseConditionalCommand] Operator {0} has too many or too few chars!", exOperator), true);
-                return "PARSING_ERROR";
-            }
-
-            char operatorChar = exOperator[0];
-
+            // Attempts parsing value
             if(int.TryParse(reqValue, out int reqValueInt))
             {
                 // If parsing was successful, creates a VariableConditional for comparison.
-                VariableConditional conditionalComparison = new VariableConditional(varName, operatorChar, reqValueInt);
+                VariableConditional conditionalComparison = new VariableConditional(varName, condOperator, reqValueInt);
 
                 // If there is a 4th variable, gets it as a string and creates a ConditionalText for it.
                 if (variables.Length > 3)
