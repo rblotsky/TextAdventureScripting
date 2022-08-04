@@ -83,8 +83,9 @@ namespace TAScript.Player
                 }
             }
 
-            // After it is finished, displays the list of blocks
+            // After it is finished, displays the list of blocks and variables
             runnableGame.LogBlockGraph();
+            runnableGame.LogAllVariables();
         }
         
     }

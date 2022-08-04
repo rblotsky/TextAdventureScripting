@@ -222,7 +222,15 @@ namespace TAScript.Runnable
             }
 
             // Displays the text
-            //DebugLogger.DebugLog(allBlocksDisplay, false);
+            DebugLogger.DebugLog(allBlocksDisplay, false);
+        }
+
+        public void LogAllVariables()
+        {
+            foreach(int varKey in variables.Keys)
+            {
+                DebugLogger.DebugLog($"Variable \"{varKey}\": {variables[varKey]}", false);
+            }
         }
     }
 }
