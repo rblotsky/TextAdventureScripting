@@ -1,0 +1,124 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "TAScript",
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#text-splitter"
+        },
+        {
+            "include": "#reroute"
+        },
+        {
+            "include": "#commands"
+        },
+        {
+            "include": "#section-start"
+        },
+        {
+            "include": "#op-prompt-specifier"
+        },
+        {
+            "include": "#return-specififer"
+        },
+        {
+            "include": "#strings"
+        }
+    ],
+    "repository": {
+        "commands": {
+            "patterns": [
+                {
+                    "name": "meta.command",
+                    "begin": "{",
+                    "end": "}",
+                    "patterns": [
+                        {
+                            "include": "#command-format"
+                        },
+                        {
+                            "include": "#strings"
+                        }
+                    ],
+                    "beginCaptures": {
+                        "0": { "name": "keyword.control" }
+                    },
+                    "endCaptures": {
+                        "0": { "name": "keyword.control" }
+                    }
+                }
+            ]
+        },
+        "command-format": {
+            "patterns": [
+                {
+                    "name": "variable.language",
+                    "match": "\\w+:"
+                },
+                {
+                    "name": "keyword.control",
+                    "match": "\\\\"
+                }
+            ]
+        },
+        "op-prompt-specifier": {
+            "patterns": [
+                {
+                    "name": "keyword.control",
+                    "match": "^\\s*((-+)|(>+))\\s*\\??"
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.unquoted",
+                    "match": "."
+                }
+            ]
+        },
+        "text-splitter": {
+            "patterns": [
+                {
+                    "name": "keyword.control",
+                    "match": "(\\[|\\])"
+                }
+            ]
+        },
+        "reroute": {
+            "patterns": [
+                {
+                    "name": "entity.name.tag",
+                    "match": "@\\w+"
+                }
+            ]
+        },
+        "section-start": {
+            "patterns": [
+                {
+                    "name": "entity.name.type",
+                    "match": "^\\s*\\$\\s*\\w+"
+                }
+            ]
+        },
+        "return-specififer": {
+            "patterns": [
+                {
+                    "name": "keyword.control",
+                    "match": "~+\\n"
+                }
+            ]
+        },
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment",
+                    "match": "//.*"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.tascript"
+}

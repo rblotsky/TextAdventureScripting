@@ -1,0 +1,34 @@
+{
+    "name": "tascript",
+    "displayName": "TAScript",
+    "description": "Syntax highlighting for a Text Adventure Scripting language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.69.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "tascript",
+                "aliases": [
+                    "TAScript",
+                    "tascript"
+                ],
+                "extensions": [
+                    ".tascript"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "tascript",
+                "scopeName": "source.tascript",
+                "path": "./syntaxes/tascript.tmLanguage.json"
+            }
+        ]
+    }
+}
