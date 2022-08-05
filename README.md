@@ -4,7 +4,12 @@ A program that interprets formatted files into simple text adventure games.
 # About
 This program is inspired by [Ink](https://www.inklestudios.com/ink/), a much better narrative scripting language.
 
-TAScript is a simple scripting language that allows creating choose-your-own-story style text adventures.
+TAScript is a simple scripting language that allows creating choose-your-own-story style text adventures, however it can be used for a wider range
+of uses. For example:
+
+- Multiple choice quizzes
+- Game dialogue trees
+- etc.
 
 An example adventure might be as follows:
 
