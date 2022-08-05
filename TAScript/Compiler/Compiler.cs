@@ -14,6 +14,7 @@ namespace TAScript.Compiler
         // Constants
         public static readonly Regex COMMENT_REGEX = new Regex(@"\/\/.*");
         public static readonly Regex SECTION_HEADER_REGEX = new Regex(@"^\$\s*(\w+)");
+        public static readonly Regex INDENT_LEVEL_REGEX = new Regex(@"^([-]+|[>]+)");
         public static readonly Regex BLOCK_REGEX = new Regex(@"^([-]+|[>]+)(.+)$", RegexOptions.Multiline);
         public static readonly Regex REROUTE_REGEX = new Regex(@"@(\w+)");
         public static readonly Regex WHITESPACE_UNTIL_CONTENT_REGEX = new Regex(@"^\s+");
@@ -83,7 +84,7 @@ namespace TAScript.Compiler
                 if (regexMatch.Success)
                 {
                     // Removes the initial type specifier (-, >)
-                    editedLine = editedLine.Replace(regexMatch.Groups[1].Value, "");
+                    editedLine = INDENT_LEVEL_REGEX.Replace(editedLine, "");
 
                     // Finishes the last ParsedBlock
                     FinishParsingBlock(parsedBlocks, currentBlockText);
