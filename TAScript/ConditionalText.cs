@@ -7,7 +7,7 @@ using TAScript.Runnable;
 
 namespace TAScript
 {
-    public class ConditionalText
+    public class ConditionalText : RuntimeText
     {
         // DATA //
         public string successText;
@@ -24,8 +24,8 @@ namespace TAScript
         }
 
 
-        // FUNCTIONS //
-        public virtual string ResolveConditional(Game context)
+        // OVERRIDES //
+        public override string GetText(Game context)
         {
             // Returns sucess if conditional succeeds
             if (conditional.RunConditional(context))

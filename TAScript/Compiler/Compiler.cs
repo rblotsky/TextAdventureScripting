@@ -294,6 +294,11 @@ namespace TAScript.Compiler
                 return ParseNoEmptyCommand;
             }
 
+            else if(commandName.Equals("PRINTVAR"))
+            {
+                return ParseVariableDisplayCommand;
+            }
+
             else
             {
                 return null;
@@ -421,6 +426,28 @@ namespace TAScript.Compiler
 
             // Returns null to signify successful compilation
             return null;
+        }
+
+        public string ParseVariableDisplayCommand(ParsedBlock block, string[] variables)
+        {
+            // Variables needed: VarName
+            // Logs error and fails if wrong number of variables
+            if(variables.Length != 1)
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseVariableDisplayCommand] Invalid amount of variables! Required: 1, Given: {variables.Length}", true);
+
+                // Fails parsing
+                return "PARSING_ERROR";
+            }
+
+            // If valid number of variables, creates a VariableText object from using the first variable as a VarName.
+            else
+            {
+                VariableText varDisplayer = new VariableText(variables[0]);
+                block.text.conditionals.Add(varDisplayer);
+                return "{#}";
+            }
+
         }
 
         // Static

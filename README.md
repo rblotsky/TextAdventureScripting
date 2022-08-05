@@ -156,4 +156,4 @@ Possible functionalities for different overloads are listed in the following tab
  MIN          | Var\Value       | Sets the variable Var to the lower value of the 2: itself, and Value. *Note: Not implemented*
  MAX          | Var\Value       | Sets the variable Var to the higher value of the 2: itself, and Value. *Note: Not implemented*
  NOEMPTY      | None            | Removes all empty lines from the text in this block.
-
+ PRINTVAR     | Var             | Prints the value of variable Var.

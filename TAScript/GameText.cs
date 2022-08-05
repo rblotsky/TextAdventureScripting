@@ -17,7 +17,7 @@ namespace TAScript
         private string asTitleText;
 
         // Conditionals within the text
-        public List<ConditionalText> conditionals = new List<ConditionalText>();
+        public List<RuntimeText> conditionals = new List<RuntimeText>();
 
         // Regex
         private static readonly Regex conditionalReplacementRegex = new Regex(@"{#}");
@@ -85,7 +85,7 @@ namespace TAScript
             string[] resolvedConditionals = new string[conditionals.Count];
             for(int i = 0; i < conditionals.Count; i++)
             {
-                resolvedConditionals[i] = conditionals[i].ResolveConditional(context);
+                resolvedConditionals[i] = conditionals[i].GetText(context);
             }
 
             // Insers them into the complete text, then splits it back up
