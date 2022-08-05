@@ -227,9 +227,70 @@ namespace TAScript.Runnable
 
         public void LogAllVariables()
         {
-            foreach(int varKey in variables.Keys)
+            // Makes a list of variables
+            List<string> variableNames = new List<string>();
+
+            // Makes a list of visited blocks
+            List<Block> visitedBlocks = new List<Block>();
+
+            // Caches a queue of Blocks to look through
+            Queue<Block> blocksToVisit = new Queue<Block>();
+            blocksToVisit.Enqueue(initialBlock);
+
+            while(blocksToVisit.Count > 0)
             {
-                DebugLogger.DebugLog($"Variable \"{varKey}\": {variables[varKey]}", false);
+                // Dequeues current block, adds it to visited
+                Block currentBlock = blocksToVisit.Dequeue();
+                visitedBlocks.Add(currentBlock);
+
+                // Adds linked blocks
+                if(currentBlock.defaultLink != null)
+                {
+                    if (!visitedBlocks.Contains(currentBlock.defaultLink))
+                    {
+                        blocksToVisit.Enqueue(currentBlock.defaultLink);
+                    }
+                }
+
+                if (currentBlock.optionBlocks != null)
+                {
+                    foreach (Block option in currentBlock.optionBlocks)
+                    {
+                        if (!visitedBlocks.Contains(option))
+                        {
+                            blocksToVisit.Enqueue(option);
+                        }
+                    }
+                }
+
+                // Searches through this block for its used variables
+                foreach(AbstractConditional conditional in currentBlock.blockConditionals)
+                {
+                    if(conditional is VariableConditional)
+                    {
+                        string varName = ((VariableConditional)conditional).variableName;
+                        if(!variableNames.Contains(varName))
+                        {
+                            variableNames.Add(varName);
+                        }
+                    }
+                }
+
+                foreach (VariableModifier executable in currentBlock.variableModifiers)
+                {
+                    string varName = executable.varName;
+                    if (!variableNames.Contains(varName))
+                    {
+                        variableNames.Add(varName);
+                    }
+                }
+            }
+
+            // Goes through all the variable names and prints their values
+            foreach(string varName in variableNames)
+            {
+                int value = GetVariable(varName);
+                DebugLogger.DebugLog($"Variable {varName} : {value}", false);
             }
         }
     }
