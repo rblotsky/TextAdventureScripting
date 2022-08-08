@@ -69,7 +69,7 @@ while not finished:
     change active block to one returned by Runnable
 ```
 
-There is an example [Controller script](\TAScript\Player\GameController.cs) included in this repository that can be used as reference.
+There is an example [Controller script](./TAScript/Player/GameController.cs) included in this repository that can be used as reference.
 
 # Writing TAScript (Text-Adventure-Script)
 ## Building Blocks
