@@ -46,6 +46,31 @@ $ SECTION2
 $ END
 ```
 
+# Using TAScript in a Program
+TAScript has 3 main parts:
+- Compiler: Compiles source files into ParsedBlocks, then into Runnable blocks.
+- Runner: Uses a graph of Runnable blocks to run the logic behind a game.
+- Controller: Interfaces with the Runner to display text and manage user input.
+
+When integrating TAScript into a program, all you need to do is run the Compiler (using `Compiler.CompileGame()`) and then use a custom Controller script to manage user input.
+Controller scripts follow a simple format:
+```pseudo
+while not finished:
+  display prompt
+  if options:
+    display options
+  
+  get user input
+  if options:
+    select an option
+    change active block to one returned by Runnable
+  if not options:
+    run continue
+    change active block to one returned by Runnable
+```
+
+There is an example [Controller script](\TAScript\Player\GameController.cs) included in this repository that can be used as reference.
+
 # Writing TAScript (Text-Adventure-Script)
 ## Building Blocks
 There are 3 main building blocks:
