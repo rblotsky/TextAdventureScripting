@@ -53,7 +53,7 @@ TAScript has 3 main parts:
 - Controller: Interfaces with the Runner to display text and manage user input.
 
 When integrating TAScript into a program, all you need to do is run the Compiler (using `Compiler.CompileGame()`) and then use a custom Controller script to manage user input.
-Controller scripts follow a simple format:
+A basic console controller script would follow this format:
 ```pseudo
 while not finished:
   display prompt
@@ -70,6 +70,8 @@ while not finished:
 ```
 
 There is an example [Controller script](./TAScript/Controller/GameController.cs) included in this repository that can be used as reference.
+
+More complex controllers can be made to interface with UI, keybinds, etc. All you need to do is use the exposed interface functions from `Runnable.Game`!
 
 # Writing TAScript (Text-Adventure-Script)
 ## Building Blocks
