@@ -86,10 +86,10 @@ namespace TAScript.Compiler
                 Block defaultLinkBlock = allRunnables.Find(x => x.blockID.Equals(defaultLinkID));
                 runnable.defaultLink = defaultLinkBlock;
 
-                // Logs an error if nothing was found, but the reroute isn't END
-                if(defaultLinkBlock == null)
+                // Logs an error if nothing was found, but the reroute isn't END (second conditional is that if reroute isn't null, it has to not be END)
+                if(defaultLinkBlock == null && (rerouteSection == null || !rerouteSection.Equals("END")))
                 {
-                    DebugLogger.DebugLog(string.Format("[ParsedBlock.PopulateRunnableVersion] Block ID {0} was unable to link to either options or default! This means that it cannot be exited.", blockID.ToString()), true);
+                    DebugLogger.DebugLog($"[ParsedBlock.PopulateRunnableVersion] Block ID {blockID.ToString()} was unable to link to either options or default! This means that it cannot be exited.\nText:\"{text.ResolveTextDebug()}\"", true);
                 }
             }
 

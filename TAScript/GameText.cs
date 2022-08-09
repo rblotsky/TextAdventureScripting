@@ -79,6 +79,11 @@ namespace TAScript
             asTitleText = (splitFilledText.Length >= 3 ? splitFilledText[2] : "");
         }
 
+        public string ResolveTextDebug()
+        {
+            return alwaysText + "[" + asOptionText + "]" + asTitleText;
+        }
+
         public string ResolveText(Game context, bool asOption)
         {
             // Resolves all conditionals
