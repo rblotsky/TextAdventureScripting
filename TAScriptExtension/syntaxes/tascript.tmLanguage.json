@@ -28,6 +28,14 @@
         }
     ],
     "repository": {
+        "comment": {
+            "patterns": [
+                {
+                    "name": "comment",
+                    "match": "//.*"
+                }
+            ]
+        },
         "commands": {
             "patterns": [
                 {
@@ -75,7 +83,7 @@
             "patterns": [
                 {
                     "name": "string.unquoted",
-                    "match": "."
+                    "match": "[^{}\\[\\]]"
                 }
             ]
         },
@@ -106,16 +114,16 @@
         "return-specififer": {
             "patterns": [
                 {
-                    "name": "keyword.control",
-                    "match": "~+\\n"
-                }
-            ]
-        },
-        "comment": {
-            "patterns": [
-                {
-                    "name": "comment",
-                    "match": "//.*"
+                    "name": "meta.return-specifier",
+                    "match": "(~+)\\s*(//.*)?\\n",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.control"
+                        },
+                        "2": {
+                            "name": "comment"
+                        }
+                    }
                 }
             ]
         }
