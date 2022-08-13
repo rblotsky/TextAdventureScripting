@@ -94,6 +94,9 @@ There are 3 main building blocks:
 Options can have a `?` character placed at the front of the option (eg. `>>>> ? Text Here`) to make them only usable once. This means that regardless of how
 many times the previous prompt is run, this option will only appear *before* it is selected, and after it is selected it will not longer be available.
 
+##### Where does execution start?
+The first block in the first section in the source file starts execution. Essentially, the program runs from the top of the file.
+
 ## Comments
 Comments are denoted with a `//` symbol. If a line contains a comment, *the entire rest of the line will be ignored*
 
