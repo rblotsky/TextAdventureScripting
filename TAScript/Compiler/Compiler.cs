@@ -42,6 +42,7 @@ namespace TAScript.Compiler
             int currentSectionHash = 0;
             BlockID currentBlockID = BlockID.ZERO;
             string currentBlockText = "";
+            List<int> sectionHashes = new List<int>();
 
             // Creates a list of parsed blocks
             List<ParsedBlock> parsedBlocks = new List<ParsedBlock>();
@@ -69,6 +70,20 @@ namespace TAScript.Compiler
                     // Updates the current block ID to start the new section
                     currentSectionHash = GetStringHashInt(regexMatch.Groups[1].Value);
                     currentBlockID = new BlockID(currentSectionHash);
+
+                    // If this section already exists, still compiles but prints an error.
+                    if(sectionHashes.Contains(currentSectionHash))
+                    {
+                        DebugLogger.DebugLog($"[Compiler.CompileGame] Encountered duplicate section: {regexMatch.Groups[1].Value} on line {currentLine}! ", true);
+                    }
+
+                    // Otherwise, adds this section to sectionHashes
+                    else
+                    {
+                        sectionHashes.Add(currentSectionHash);
+                    }
+
+                    // Continues to next loop, nothing more to do on this line
                     continue;
                 }
                 

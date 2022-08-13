@@ -33,6 +33,13 @@ namespace TAScript.Runnable
         // Game Interface
         public void StartGame()
         {
+            // Logs error if no blocks
+            if(initialBlock == null)
+            {
+                DebugLogger.DebugLog("[Game.StartGame] There is no initialBlock to run!", true);
+                return;
+            }
+
             // Starts the game by setting the activeBlock to the initialBlock and resetting certain values
             accessedBlocks = new List<Block>();
             displayedText = new List<string>();
