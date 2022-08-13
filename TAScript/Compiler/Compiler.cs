@@ -129,7 +129,15 @@ namespace TAScript.Compiler
 
             // Generates a Game object and fills it with the new Blocks
             Runnable.Game compiledGame = new Runnable.Game();
-            compiledGame.initialBlock = runnableBlocks[0];
+            if (runnableBlocks.Count == 0)
+            {
+                DebugLogger.DebugLog("[Compiler.CompileGame] No Blocks found for input file! This could be because the file is empty, there are no prompts/options, or there are no sections.", true);
+            }
+
+            else
+            {
+                compiledGame.initialBlock = runnableBlocks[0];
+            }
 
             // Returns the generated game
             return compiledGame;
