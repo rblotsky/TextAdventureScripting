@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TAScript.Runnable;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
-    public class VariableText : RuntimeText
+    public class VariableText : RuntimeInsertedText
     {
         // DATA //
         public string varName;

@@ -26,7 +26,7 @@ namespace TAScript.Compiler
 
         // Command Data
         public List<AbstractConditional> blockConditionals = new List<AbstractConditional>();
-        public List<VariableModifier> variableModifiers = new List<VariableModifier>();
+        public List<BlockCompletionFunction> completionFunctions = new List<BlockCompletionFunction>();
 
 
         // CONSTRUCTORS //
@@ -95,7 +95,7 @@ namespace TAScript.Compiler
 
             // Populates the block conditionals & var modifiers
             runnable.blockConditionals = blockConditionals.ToArray();
-            runnable.variableModifiers = variableModifiers.ToArray();
+            runnable.completionFunctions = completionFunctions.ToArray();
 
         }
 

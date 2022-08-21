@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TAScript.Runnable;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
-    public class ConditionalText : RuntimeText
+    public class ConditionalText : RuntimeInsertedText
     {
         // DATA //
         public string successText;

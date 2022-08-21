@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
     public enum Comparison
     {

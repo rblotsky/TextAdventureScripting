@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TAScript.Runnable;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
-    public class VariableModifier
+    public class VariableModifier : BlockCompletionFunction
     {
         // DATA //
         public string varName;
@@ -25,7 +24,7 @@ namespace TAScript
 
         
         // FUNCTIONS //
-        public void RunModifier(Game context)
+        public override void RunModifier(Game context)
         {
             // If adding, adds to the variable
             if(isAdding)

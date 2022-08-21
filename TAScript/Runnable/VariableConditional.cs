@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TAScript.Runnable;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
     public class VariableConditional : AbstractConditional
     {

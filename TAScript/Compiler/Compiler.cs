@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using TAScript;
+using TAScript.Runnable;
 
 namespace TAScript.Compiler
 {
@@ -238,7 +238,7 @@ namespace TAScript.Compiler
                     lastBlock.blockConditionals.Add(oneTimeConditional);
 
                     VariableModifier modifier = new VariableModifier(lastBlock.blockID.ToString(), 1, true);
-                    lastBlock.variableModifiers.Add(modifier);
+                    lastBlock.completionFunctions.Add(modifier);
                 }
 
                 // Parses the commands in the text, replacing them with whatever their functions says to replace with.
@@ -322,24 +322,102 @@ namespace TAScript.Compiler
                 return ParseVariableDisplayCommand;
             }
 
+            else if(commandName.Equals("MIN"))
+            {
+                return ParseMinCommand;
+            }
+
+            else if(commandName.Equals("MAX"))
+            {
+                return ParseMaxCommand;
+            }
+
             else
             {
                 return null;
             }
         }
 
+        public string ParseMinCommand(ParsedBlock block, string[] variables)
+        {
+            /*
+             * Possible Overloads:
+             * 1. Variable,Value : Sets Variable to the lowest of itself and Value
+             */
+
+            // If invalid variable count, does nothing
+            if(variables.Length != 2)
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseMinCommand] Failed to parse MIN command with variables: {variables}. Invalid variable count! Expected: 2, Received: {variables.Length}", true);
+                return "PARSING_ERROR";
+            }
+
+            // Gets the variables
+            string varName = variables[0];
+            string minValue = variables[1];
+
+            // If minValue is valid, adds the required VariableModifier to the current block
+            if(int.TryParse(minValue, out int intMinValue))
+            {
+                BlockCompletionFunction varModifier = new VariableClamper(varName, intMinValue, true);
+                block.completionFunctions.Add(varModifier);
+                return null;
+            }
+
+            // Otherwise, returns PARSING_ERROR
+            else
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseMinCommand] Failed to parse MIN command! Value {minValue} is not an integer!", true);
+                return "PARSING_ERROR";
+            }
+        }
+
+        public string ParseMaxCommand(ParsedBlock block, string[] variables)
+        {
+            /*
+             * Possible Overloads:
+             * 1. Variable,Value : Sets Variable to the highest of itself and Value
+             */
+
+            // If invalid variable count, does nothing
+            if (variables.Length != 2)
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseMinCommand] Failed to parse MAX command with variables: {variables}. Invalid variable count! Expected: 2, Received: {variables.Length}", true);
+                return "PARSING_ERROR";
+            }
+
+            // Gets the variables
+            string varName = variables[0];
+            string minValue = variables[1];
+
+            // If minValue is valid, adds the required VariableModifier to the current block
+            if (int.TryParse(minValue, out int intMinValue))
+            {
+                BlockCompletionFunction varModifier = new VariableClamper(varName, intMinValue, false);
+                block.completionFunctions.Add(varModifier);
+                return null;
+            }
+
+            // Otherwise, returns PARSING_ERROR
+            else
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseMinCommand] Failed to parse MAX command! Value {minValue} is not an integer!", true);
+                return "PARSING_ERROR";
+            }
+        }
+        
         public string ParseConditionalCommand(ParsedBlock block, string[] variables)
         {
             /*
              * Possible Overloads:
-             * 1. Var,Operator,ReqValue      : Displays the option if the conditional evaluates to True
+             * 1. Var,Operator,ReqValue                      : Displays the option if the conditional evaluates to True
              * 2. Var,Operator,ReqValue,SuccessText,FailText : Creates a ConditionalText for the Text variable.
              */
 
-            // If there are less than 3 variables, does nothing.
+            // If there are less than 3 variables, returns error.
             if(variables.Length < 3)
             {
-                return null;
+                return "PARSING_ERROR";
             }
 
             // Gets first 3 variables
@@ -390,7 +468,48 @@ namespace TAScript.Compiler
 
         public string ParseRandomCommand(ParsedBlock block, string[] variables)
         {
-            return null;
+            /*
+             * Possible Overloads:
+             * 1. Value         : Has a Value% chance of displaying this option.
+             * 2. Text,Text,... : Selects a random text object from the array and displays it. Note: Must have AT LEAST 2 variables, or else the 1st overload will be used.
+             */
+
+            // If 1 variable, parses it as int and adds a RandomConditional to the block
+            if(variables.Length == 1)
+            {
+                // If it parses properly, adds the RandomConditional using the value as the percent chance
+                if(int.TryParse(variables[0], out int percentChance))
+                {
+                    RandomConditional conditional = new RandomConditional(percentChance);
+                    block.blockConditionals.Add(conditional);
+                    return null;
+                }
+
+                // If couldn't parse, returns an error
+                else
+                {
+                    DebugLogger.DebugLog($"[Compiler.ParseRandomCommand] Failed to parse RAND command for 1 variable: Variable must be an integer! Given: {variables[0]}.", true);
+                    return "PARSING_ERROR";
+                }
+            }
+
+            // If 2+ variables, keeps them as strings and adds a RandomText to the text.
+            else if(variables.Length >= 2)
+            {
+                // Creates a RandomText from the variables and adds it to the text conditionals
+                RandomText textInserter = new RandomText(variables);
+                block.text.conditionals.Add(textInserter);
+
+                // Returns a format specifier to fill in
+                return "{#}";
+            }
+
+            // If no variables, returns a parsing error
+            else
+            {
+                DebugLogger.DebugLog($"[Compiler.ParseRandomCommand] Too few variables given for RAND command! Given: {variables.Length}, Expected: 1, or 2+", true);
+                return "PARSING_ERROR";
+            }
         }
 
         public string ParseAddCommand(ParsedBlock block, string[] variables)
@@ -421,7 +540,7 @@ namespace TAScript.Compiler
                 if (int.TryParse(variables[1], out int addValue))
                 {
                     // Adds the new Variable Modifier object and returns null.
-                    block.variableModifiers.Add(new VariableModifier(varName, addValue, isAdd));
+                    block.completionFunctions.Add(new VariableModifier(varName, addValue, isAdd));
                     return null;
                 }
 
@@ -443,7 +562,7 @@ namespace TAScript.Compiler
 
         public string ParseNoEmptyCommand(ParsedBlock block, string[] variables)
         {
-            // No variables needed for this command
+            // No variables needed for this command.
             // Sets the block text to have no empty lines.
             block.text.noEmptyLines = true;
 

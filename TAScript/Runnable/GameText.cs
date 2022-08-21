@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TAScript.Runnable;
 using System.Text.RegularExpressions;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
     public class GameText
     {
@@ -17,7 +17,7 @@ namespace TAScript
         private string asTitleText;
 
         // Conditionals within the text
-        public List<RuntimeText> conditionals = new List<RuntimeText>();
+        public List<RuntimeInsertedText> conditionals = new List<RuntimeInsertedText>();
 
         // Regex
         private static readonly Regex conditionalReplacementRegex = new Regex(@"{#}");

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TAScript.Runnable;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
-    public class RuntimeText
+    public class RuntimeInsertedText
     {
         // FUNCTIONS //
         public virtual string GetText(Game context)

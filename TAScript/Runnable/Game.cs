@@ -57,6 +57,12 @@ namespace TAScript.Runnable
 
         public void StartNewBlock(Block newBlock)
         {
+            // Runs the old block's variable modifiers, it if has any.
+            if (activeBlock != null)
+            {
+                newBlock.RunCompletionFunctions(this);
+            }
+
             // If the new block is the same as the active block, does nothing
             if (activeBlock == newBlock)
             {
@@ -83,12 +89,6 @@ namespace TAScript.Runnable
 
             // Goes to the new block
             activeBlock = newBlock;
-
-            // Runs the new block's variable modifiers, it if has any.
-            if(newBlock != null)
-            {
-                newBlock.RunVariableModifiers(this);
-            }
         }
 
         public void HandleTextInput(string userInput)
@@ -283,7 +283,7 @@ namespace TAScript.Runnable
                     }
                 }
 
-                foreach (VariableModifier executable in currentBlock.variableModifiers)
+                foreach (VariableModifier executable in currentBlock.completionFunctions)
                 {
                     string varName = executable.varName;
                     if (!variableNames.Contains(varName))

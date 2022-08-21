@@ -177,13 +177,13 @@ Possible functionalities for different overloads are listed in the following tab
 
  Command Name | Arguments       | Functionality 
 --------------|-----------------|---------------
- RAND         | Text\Text...| Gets replaced with a random value from the variables. *Note: Not implemented*
- RAND         | None            | Randomly decides whether to display this option in the previous prompt. *Note: Not implemented*
+ RAND         | Text\Text...    | Gets replaced with a random value from the variables.
+ RAND         | Value           | Considers Value as percentage chance (out of 100). Displays this option in the previous prompt Value% of the time.
  COND         | Var\Operator\ReqValue\SuccessText\FailureText | Displays SuccessText if the expression specified is true, FailureText if not.
  COND         | Var\Operator\ReqValue | Displays this option if the expression specified is true. *Note: If multiple COND commands are used, ALL of them must pass.*
  SET          | Var\Value       | Sets variable Var to value Value.
  ADD          | Var\Value       | Adds value Value to variable Var. 
- MIN          | Var\Value       | Sets the variable Var to the lower value of the 2: itself, and Value. *Note: Not implemented*
- MAX          | Var\Value       | Sets the variable Var to the higher value of the 2: itself, and Value. *Note: Not implemented*
+ MIN          | Var\Value       | Sets the variable Var to the lower value of the 2: itself, and Value.
+ MAX          | Var\Value       | Sets the variable Var to the higher value of the 2: itself, and Value.
  NOEMPTY      | None            | Removes all empty lines from the text in this block.
  PRINTVAR     | Var             | Prints the value of variable Var.

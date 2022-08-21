@@ -21,7 +21,7 @@ namespace TAScript.Runnable
         public AbstractConditional[] blockConditionals;
 
         // Var Modifiers
-        public VariableModifier[] variableModifiers;
+        public BlockCompletionFunction[] completionFunctions;
 
 
         // CONSTRUCTORS //
@@ -92,11 +92,11 @@ namespace TAScript.Runnable
 
 
         // Command functions
-        public void RunVariableModifiers(Game context)
+        public void RunCompletionFunctions(Game context)
         {
-            foreach (VariableModifier modifier in variableModifiers)
+            foreach (BlockCompletionFunction function in completionFunctions)
             {
-                modifier.RunModifier(context);
+                function.RunModifier(context);
             }
         }
 

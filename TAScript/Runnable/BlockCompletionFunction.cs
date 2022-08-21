@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TAScript
+namespace TAScript.Runnable
 {
-    public abstract class AbstractConditional
+    public abstract class BlockCompletionFunction
     {
         // FUNCTIONS //
-        public abstract bool RunConditional(Runnable.Game context);
+        public abstract void RunModifier(Game context);
     }
 }
