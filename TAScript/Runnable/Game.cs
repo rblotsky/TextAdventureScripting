@@ -60,7 +60,7 @@ namespace TAScript.Runnable
             // Runs the old block's variable modifiers, it if has any.
             if (activeBlock != null)
             {
-                newBlock.RunCompletionFunctions(this);
+                activeBlock.RunCompletionFunctions(this);
             }
 
             // If the new block is the same as the active block, does nothing
