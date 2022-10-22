@@ -76,11 +76,6 @@ namespace TAScript.Player
                         }
                     }
                 }
-
-                else if(inputRequired == UserInputType.Text)
-                {
-                    //TODO
-                }
             }
 
             // After it is finished, displays the list of blocks and variables
