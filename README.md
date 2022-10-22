@@ -63,10 +63,10 @@ while not finished:
   get user input
   if options:
     select an option
-    change active block to one returned by Runnable
+    change active block to selected option
   if not options:
     run continue
-    change active block to one returned by Runnable
+    change active block to continue block
 ```
 
 There is an example [Controller script](./TAScript/Controller/GameController.cs) included in this repository that can be used as reference.
