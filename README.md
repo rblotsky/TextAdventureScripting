@@ -46,6 +46,10 @@ $ SECTION2
 $ END
 ```
 
+# Post-Completion Review
+This project has *terrible* access control to classes and their members. Almost everything is `public`, and is likely to cause many problems. I could say this is because I usually use Unity and in Unity fields must be public in order to be editable in the inspector, but really I should've known better.
+I may or may not go back to refactor this to fix the issue in the future.
+
 # Using TAScript in a Program
 TAScript has 3 main parts:
 - Compiler: Compiles source files into ParsedBlocks, then into Runnable blocks.
@@ -63,10 +67,10 @@ while not finished:
   get user input
   if options:
     select an option
-    change active block to one returned by Runnable
+    change active block to selected option
   if not options:
     run continue
-    change active block to one returned by Runnable
+    change active block to continue block
 ```
 
 There is an example [Controller script](./TAScript/Controller/GameController.cs) included in this repository that can be used as reference.
