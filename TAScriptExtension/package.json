@@ -20,7 +20,11 @@
                 "extensions": [
                     ".tascript"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "./icon-light.png",
+                    "dark": "./icon-dark.png"
+                }
             }
         ],
         "grammars": [
