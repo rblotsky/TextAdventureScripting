@@ -174,7 +174,7 @@ Argument Descriptions:
 
 #### Commands with Multiple Argument Lists: 
 
-A command can have multiple types of expected arguments. For example, RAND can have either no arguments, or a list of text values. This means 
+A command can have multiple types of expected arguments. For example, RAND can have either a numerical value, or a list of text values. This means 
 that a different functionality will run depending on which arguments are used. 
 
 Possible functionalities for different overloads are listed in the following table.
